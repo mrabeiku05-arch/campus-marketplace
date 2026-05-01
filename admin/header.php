@@ -51,7 +51,7 @@ $logoutLink = $realSiteRoot . '/logout.php';
         }
     </script>
 
-    <script type="module" src="../assets/dist/app.js"></script>
+    <!-- React app.js removed - admin panel uses traditional PHP navigation -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js" defer></script>
 
     <style>
