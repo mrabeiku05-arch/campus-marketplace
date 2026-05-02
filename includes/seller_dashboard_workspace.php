@@ -10,8 +10,12 @@ $withdrawalTotal = 0.0;
 // $activityFeed is now populated by UNION ALL query in dashboard.php
 // Inventory counts via DB (accurate regardless of active filter)
 $_uid = $user['id'];
+$stmtAll = $pdo->prepare("SELECT COUNT(*) FROM products WHERE user_id=? AND status!='deleted'");
+$stmtAll->execute([$_uid]);
+$allCount = (int)$stmtAll->fetchColumn();
+
 $inventoryStats = [
-    'all' => (int)$pdo->prepare("SELECT COUNT(*) FROM products WHERE user_id=? AND status!='deleted'")?->execute([$_uid])?->fetchColumn() ?: count($products),
+    'all' => $allCount ?: count($products),
     'approved' => 0,
     'pending' => 0,
     'paused' => 0,
