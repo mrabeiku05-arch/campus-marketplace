@@ -37,12 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $html = "<div style=\"font-family:Arial,sans-serif;line-height:1.6;color:#111827\">
                 <h2 style=\"color:#7c3aed;margin-bottom:12px\">Reset your password</h2>
                 <p>Hello {$safeName},</p>
-                <p>We received a request to reset your Campus Marketplace password.</p>
-                <p><a href=\"{$safeUrl}\" style=\"display:inline-block;padding:10px 18px;background:#7c3aed;color:#fff;text-decoration:none;border-radius:999px;font-weight:700\">Reset Password</a></p>
+                <p>We received a request to reset your CampusMarketplace password.</p>
+                <p><a href="{$safeUrl}" style="display:inline-block;padding:10px 18px;background:#7c3aed;color:#fff;text-decoration:none;border-radius:999px;font-weight:700">Reset Password</a></p>
                 <p>This link expires in 1 hour. If you did not request this, you can ignore this email.</p>
             </div>";
 
-            sendMarketplaceEmail($user['email'], 'Reset your password | Campus Marketplace', $html);
+            sendMarketplaceEmail($user['email'], 'Reset your password | CampusMarketplace', $html);
         }
 
         $success = 'If that account exists, a password reset link has been sent to its email address.';

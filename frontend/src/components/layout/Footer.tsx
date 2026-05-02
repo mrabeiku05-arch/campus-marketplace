@@ -44,11 +44,11 @@ function TermsModal({ open, onClose }: { open: boolean; onClose: () => void }) {
           <div style={{position:'absolute', top:0, left:0, height:'100%', width:`${progressPercent}%`, background:'#0071e3', transition:'width 0.1s'}}></div>
         </div>
         <div onScroll={handleScroll} style={{flex:1, overflowY:'auto', padding:'2rem 2.5rem', fontSize:'0.95rem', lineHeight:1.8, color:'var(--text-main)', scrollBehavior:'smooth'}}>
-          <h2 style={{fontSize: '1.4rem', marginBottom: '1.5rem'}}>Campus Marketplace Platform</h2>
+          <h2 style={{fontSize: '1.4rem', marginBottom: '1.5rem'}}>CampusMarketplace Platform</h2>
           <p style={{color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '2rem'}}>Last Updated: March 29, 2026</p>
 
           <h3 style={{fontSize: '1.1rem', fontWeight: 700, marginTop: '2rem', marginBottom: '0.75rem'}}>1. INTRODUCTION</h3>
-          <p>Welcome to Campus Marketplace. By accessing or using this platform, you agree to comply with and be bound by these Terms and Conditions. If you do not agree, you must not use this platform.</p>
+          <p>Welcome to CampusMarketplace. By accessing or using this platform, you agree to comply with and be bound by these Terms and Conditions. If you do not agree, you must not use this platform.</p>
           <p>This platform connects buyers and sellers within the campus community for the exchange of goods and services.</p>
 
           <h3 style={{fontSize: '1.1rem', fontWeight: 700, marginTop: '2rem', marginBottom: '0.75rem'}}>2. USER ELIGIBILITY</h3>
@@ -198,7 +198,7 @@ function TermsModal({ open, onClose }: { open: boolean; onClose: () => void }) {
           <ul>
               <li>Sellers are provided with a <strong>unique Global Shop Link</strong> in their dashboard.</li>
               <li>We encourage sellers to share this link on external platforms such as WhatsApp (Status and Chats), Facebook, Instagram, and other social media to showcase their products to potential buyers outside the platform.</li>
-              <li>This link serves as a direct gateway for customers to view a seller's full catalog on the Campus Marketplace.</li>
+              <li>This link serves as a direct gateway for customers to view a seller's full catalog on the CampusMarketplace.</li>
               <li>Any misuse of links for spamming or unauthorized data collection is strictly prohibited.</li>
           </ul>
 
@@ -242,7 +242,7 @@ function TermsModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 function AIAssistant() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<{text: string; sender: 'user' | 'ai'}[]>([
-    { text: "Hi there! I'm the Campus Marketplace Assistant. I can help with buying, selling, safety tips, and navigating the site. Ask me anything!", sender: 'ai' }
+    { text: "Hi there! I'm the CampusMarketplace Assistant. I can help with buying, selling, safety tips, and navigating the site. Ask me anything!", sender: 'ai' }
   ]);
   const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false);
@@ -335,7 +335,7 @@ export default function Footer() {
           <div>
             <h3 style={{fontSize:'1rem', fontWeight:800, marginBottom:'0.4rem', display:'flex', alignItems:'center', gap:'4px'}}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-              Campus Marketplace
+              CampusMarketplace
             </h3>
             <p style={{color:'var(--text-muted)', fontSize:'0.7rem', lineHeight:1.4}}>Everything you need on campus.<br/>Connect. Buy. Sell easily.</p>
           </div>
@@ -367,7 +367,7 @@ export default function Footer() {
           </div>
         </div>
         <div style={{textAlign:'center', paddingTop:'1rem', borderTop:'1px solid var(--border)', color:'var(--text-muted)', fontSize:'0.7rem'}}>
-          &copy; {new Date().getFullYear()} Campus Marketplace
+          &copy; {new Date().getFullYear()} CampusMarketplace
         </div>
       </footer>
 

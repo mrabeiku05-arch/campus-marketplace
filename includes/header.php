@@ -63,9 +63,9 @@ if (file_exists(__DIR__ . '/../.maintenance') && !isAdmin()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Campus Marketplace — Buy and sell safely within your university community.">
+    <meta name="description" content="CampusMarketplace — Buy and sell safely within your university community.">
     <meta name="csrf-token" content="<?= $_SESSION['csrf_token'] ?? '' ?>">
-    <title><?= htmlspecialchars($pageTitle ?? 'Campus Marketplace', ENT_QUOTES, 'UTF-8') ?></title>
+    <title><?= htmlspecialchars($pageTitle ?? 'CampusMarketplace', ENT_QUOTES, 'UTF-8') ?></title>
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark-mode');
@@ -87,7 +87,7 @@ if (file_exists(__DIR__ . '/../.maintenance') && !isAdmin()) {
     <nav style="position:sticky; top:0; z-index:999999; background:var(--card-bg, #ffffff); border-bottom:1px solid var(--border, #e5e7eb); transition: background 0.3s, border-color 0.3s; padding: 0 5%;">
         <div class="nav-shell" style="display:flex; align-items:center; justify-content:space-between; gap:1rem; height:58px; max-width:1400px; margin:0 auto; width:100%;">
             <!-- Brand -->
-            <a href="<?= $baseUrl ?>" class="nav-brand-link" aria-label="Campus Marketplace home" title="Campus Marketplace" style="color:var(--text-main); text-decoration:none; display:flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:12px; flex-shrink:0; transition:background 0.2s, opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+            <a href="<?= $baseUrl ?>" class="nav-brand-link" aria-label="CampusMarketplace home" title="CampusMarketplace" style="color:var(--text-main); text-decoration:none; display:flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:12px; flex-shrink:0; transition:background 0.2s, opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
             </a>
 

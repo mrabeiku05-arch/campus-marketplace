@@ -54,11 +54,11 @@ require_once 'includes/header.php';
 
         <div id="termsContainer" style="height: 450px; overflow-y: scroll; background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.08); border-radius: 20px; padding: 2.5rem; margin-bottom: 2.5rem; font-size: 0.95rem; line-height: 1.8; color: var(--text-main); scroll-behavior: smooth;">
             <div id="termsContent">
-                <h2 style="font-size: 1.4rem; margin-bottom: 1.5rem;">Campus Marketplace Platform</h2>
+                <h2 style="font-size: 1.4rem; margin-bottom: 1.5rem;">CampusMarketplace Platform</h2>
                 <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 2rem;">Last Updated: March 29, 2026</p>
 
                 <h3 style="font-size: 1.1rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem;">1. INTRODUCTION</h3>
-                <p>Welcome to Campus Marketplace. By accessing or using this platform, you agree to comply with and be bound by these Terms and Conditions. If you do not agree, you must not use this platform.</p>
+                <p>Welcome to CampusMarketplace. By accessing or using this platform, you agree to comply with and be bound by these Terms and Conditions. If you do not agree, you must not use this platform.</p>
                 <p>This platform connects buyers and sellers within the campus community for the exchange of goods and services.</p>
 
                 <h3 style="font-size: 1.1rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem;">2. USER ELIGIBILITY</h3>
@@ -208,7 +208,7 @@ require_once 'includes/header.php';
                 <ul>
                     <li>Sellers are provided with a <strong>unique Global Shop Link</strong> in their dashboard.</li>
                     <li>We encourage sellers to share this link on external platforms such as WhatsApp (Status and Chats), Facebook, Instagram, and other social media to showcase their products to potential buyers outside the platform.</li>
-                    <li>This link serves as a direct gateway for customers to view a seller's full catalog on the Campus Marketplace.</li>
+                    <li>This link serves as a direct gateway for customers to view a seller's full catalog on the CampusMarketplace.</li>
                     <li>Any misuse of links for spamming or unauthorized data collection is strictly prohibited.</li>
                 </ul>
 

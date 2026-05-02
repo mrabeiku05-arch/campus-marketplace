@@ -3,7 +3,7 @@
     <footer style="margin-top: 5rem; padding: 2.5rem 0; border-top: 1px solid var(--border); background: var(--bg-main);">
         <div style="width: 96%; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.85rem; font-weight: 500;">
             <div>
-                &copy; <?= date('Y') ?> <span style="color: var(--text-main); font-weight: 700;">Campus Marketplace</span> Admin
+                &copy; <?= date('Y') ?> <span style="color: var(--text-main); font-weight: 700;">CampusMarketplace</span> Admin
             </div>
             <div style="display: flex; gap: 1.5rem; align-items: center;">
                 <span style="background: rgba(124, 58, 237, 0.1); color: #7c3aed; padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 0.75rem;">
@@ -100,7 +100,7 @@
                     if (id > lastNotificationId) {
                         lastNotificationId = id;
                     }
-                    showToast(item.title || 'Campus Marketplace', item.message || '', item.link_url || '');
+                    showToast(item.title || 'CampusMarketplace', item.message || '', item.link_url || '');
                 });
             } catch (error) {
                 console.warn('Admin notification polling failed', error);

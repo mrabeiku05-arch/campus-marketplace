@@ -97,7 +97,7 @@ try {
         $pdo = null;
     } else {
         // PROFESSIONAL LIVE MODE ERROR SCREEN
-        die('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Maintenance | Campus Marketplace</title><style>body{background:#0a0f1e;color:#fff;font-family:system-ui, -apple-system, sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;overflow:hidden;text-align:center;} .glass{background:#111;padding:3rem;border-radius:24px;border:1px solid rgba(255,255,255,0.1);max-width:400px;box-shadow:0 40px 100px rgba(0,0,0,0.4);} h1{font-size:3rem;margin:0;background:linear-gradient(135deg, #fff 0%, #666 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.05em;} p{color:rgba(255,255,255,0.6);line-height:1.6;margin-top:1rem;font-size:1.1rem;} .dot{height:8px;width:8px;background:#7c3aed;border-radius:50%;display:inline-block;margin-right:8px;box-shadow:0 0 15px #7c3aed;}</style></head><body><div class="glass"><h1>503</h1><p><span class="dot"></span>We are currently optimizing our servers. <br>The Campus Marketplace will be back online shortly.</p></div></body></html>');
+        die('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Maintenance | CampusMarketplace</title><style>body{background:#0a0f1e;color:#fff;font-family:system-ui, -apple-system, sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;overflow:hidden;text-align:center;} .glass{background:#111;padding:3rem;border-radius:24px;border:1px solid rgba(255,255,255,0.1);max-width:400px;box-shadow:0 40px 100px rgba(0,0,0,0.4);} h1{font-size:3rem;margin:0;background:linear-gradient(135deg, #fff 0%, #666 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.05em;} p{color:rgba(255,255,255,0.6);line-height:1.6;margin-top:1rem;font-size:1.1rem;} .dot{height:8px;width:8px;background:#7c3aed;border-radius:50%;display:inline-block;margin-right:8px;box-shadow:0 0 15px #7c3aed;}</style></head><body><div class="glass"><h1>503</h1><p><span class="dot"></span>We are currently optimizing our servers. <br>The CampusMarketplace will be back online shortly.</p></div></body></html>');
     }
 }
 
@@ -704,7 +704,7 @@ function notificationTitleFor(string $type): string {
         'order_update', 'order_accepted', 'order_rejected', 'order_cancelled', 'seller_confirmed', 'buyer_confirmed' => 'Order update',
         'admin_alert', 'dispute' => 'Admin alert',
         'password_reset' => 'Password reset',
-        default => 'Campus Marketplace',
+        default => 'CampusMarketplace',
     };
 }
 
@@ -725,7 +725,7 @@ function sendMarketplaceEmail(string $to, string $subject, string $html, string 
 
     $host = parse_url(getAppUrl(), PHP_URL_HOST) ?: 'campusmarketplace.local';
     $fromAddress = (string) env('MAIL_FROM_ADDRESS', 'no-reply@' . $host);
-    $fromName = (string) env('MAIL_FROM_NAME', 'Campus Marketplace');
+    $fromName = (string) env('MAIL_FROM_NAME', 'CampusMarketplace');
 
     if ($plainText === '') {
         $plainText = trim(preg_replace('/\s+/', ' ', strip_tags(str_replace(['<br>', '<br/>', '<br />', '</p>'], ["\n", "\n", "\n", "\n\n"], $html))));
@@ -788,11 +788,11 @@ function createNotification(PDO $pdo, int $userId, string $type, string $message
         <h2 style=\"margin:0 0 12px;color:#7c3aed\">{$safeTitle}</h2>
         <p>Hello " . htmlspecialchars($targetUser['username'] ?? 'there', ENT_QUOTES, 'UTF-8') . ",</p>
         <p>{$safeMessage}</p>
-        <p><a href=\"{$safeLink}\" style=\"display:inline-block;padding:10px 18px;background:#7c3aed;color:#fff;text-decoration:none;border-radius:999px;font-weight:700\">Open Campus Marketplace</a></p>
-        <p style=\"font-size:12px;color:#6b7280\">You are receiving this because activity happened on your Campus Marketplace account.</p>
+        <p><a href=\"{$safeLink}\" style=\"display:inline-block;padding:10px 18px;background:#7c3aed;color:#fff;text-decoration:none;border-radius:999px;font-weight:700\">Open CampusMarketplace</a></p>
+        <p style=\"font-size:12px;color:#6b7280\">You are receiving this because activity happened on your CampusMarketplace account.</p>
     </div>";
 
-    sendMarketplaceEmail($targetUser['email'], $title . ' | Campus Marketplace', $html);
+    sendMarketplaceEmail($targetUser['email'], $title . ' | CampusMarketplace', $html);
 }
 
 function createMessageNotification(PDO $pdo, int $receiverId, int $senderId, string $messagePreview = ''): void {
@@ -1031,7 +1031,7 @@ function registerUserSession(PDO $pdo, int $userId): void {
                 $html = "<div style=\"font-family:Arial,sans-serif;line-height:1.6;color:#111827\">
                     <h2 style=\"color:#7c3aed;margin-bottom:12px\">New Login Detected</h2>
                     <p>Hello " . htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') . ",</p>
-                    <p>Your Campus Marketplace account was just signed into from a new device or location.</p>
+                    <p>Your CampusMarketplace account was just signed into from a new device or location.</p>
                     <div style=\"background:#f3f4f6;padding:15px;border-radius:8px;margin:15px 0;\">
                         <strong>Time:</strong> {$time}<br>
                         <strong>IP Address:</strong> {$ip}<br>
@@ -1040,7 +1040,7 @@ function registerUserSession(PDO $pdo, int $userId): void {
                     <p>If this was you, you can ignore this email. If you don't recognize this activity, please <strong>change your password immediately</strong> and log out other sessions from your Security settings.</p>
                     <p><a href=\"" . rtrim(getAppUrl(), '/') . "/security.php\" style=\"display:inline-block;padding:10px 18px;background:#7c3aed;color:#fff;text-decoration:none;border-radius:999px;font-weight:700\">Manage Sessions</a></p>
                 </div>";
-                sendMarketplaceEmail($email, 'Security Alert: New Login Detected | Campus Marketplace', $html);
+                sendMarketplaceEmail($email, 'Security Alert: New Login Detected | CampusMarketplace', $html);
             }
         }
     } catch (PDOException $e) {

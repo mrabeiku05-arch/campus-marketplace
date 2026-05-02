@@ -220,7 +220,7 @@ export const SignInPage = () => {
 
       {/* Hero side */}
       <HeroPanel
-        title="Your Campus Marketplace"
+        title="Your CampusMarketplace"
         description="Buy, sell, and connect safely with fellow students. Your data is protected and your transactions are secure."
         icon={
           <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">

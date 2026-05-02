@@ -1,6 +1,6 @@
 <?php
 /**
- * Campus Marketplace REST API — Main Router
+ * CampusMarketplace REST API — Main Router
  * All requests are routed through this file via .htaccess
  */
 

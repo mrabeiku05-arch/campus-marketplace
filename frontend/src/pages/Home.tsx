@@ -367,7 +367,7 @@ export default function Home() {
       <div className="container">
         <div className="notice-box-inline mb-4" style={{ maxWidth: '800px', margin: '20px auto', background: 'rgba(255,204,0,0.15)', border: '1px solid rgba(255,204,0,0.5)', padding: '15px', borderRadius: '12px', textAlign: 'center' }}>
           <strong><span style={{ fontSize: '1.1rem', verticalAlign: 'middle', marginRight: '5px' }}>⚠️</span> SAFETY NOTICE:</strong>{' '}
-          <span>All transactions should be made in person. Sending money online without meeting the seller is at your own risk. Campus Marketplace will not be held accountable for online transactions.</span>
+          <span>All transactions should be made in person. Sending money online without meeting the seller is at your own risk. CampusMarketplace will not be held accountable for online transactions.</span>
         </div>
 
         <div className="glass filter-bar" style={{ marginBottom: '2rem' }}>

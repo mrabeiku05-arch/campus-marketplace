@@ -138,12 +138,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $html = "<div style=\"font-family:Arial,sans-serif;line-height:1.6;color:#111827\">
                     <h2 style=\"color:#7c3aed;margin-bottom:12px\">Verify your email</h2>
                     <p>Hello " . htmlspecialchars($username, ENT_QUOTES, 'UTF-8') . ",</p>
-                    <p>Welcome to Campus Marketplace! Please verify your email address to activate your account.</p>
+                    <p>Welcome to CampusMarketplace! Please verify your email address to activate your account.</p>
                     <p><a href=\"{$safeUrl}\" style=\"display:inline-block;padding:12px 24px;background:#7c3aed;color:#fff;text-decoration:none;border-radius:999px;font-weight:700\">Verify Email Address</a></p>
                     <p>If you cannot click the button, copy and paste this link into your browser:</p>
                     <p style=\"font-size:0.85rem;color:#6b7280\">{$safeUrl}</p>
                 </div>";
-                sendMarketplaceEmail($email, 'Verify your email | Campus Marketplace', $html);
+                sendMarketplaceEmail($email, 'Verify your email | CampusMarketplace', $html);
 
                 $pdo->commit();
                 session_regenerate_id(true);
@@ -352,7 +352,7 @@ require_once 'includes/header.php';
                         <line x1="22" y1="11" x2="16" y2="11"/>
                     </svg>
                 </div>
-                <h2 class="auth-hero-title">Join Campus Marketplace</h2>
+                <h2 class="auth-hero-title">Join CampusMarketplace</h2>
                 <p class="auth-hero-desc">Connect with thousands of students. Buy, sell, and grow your campus business with ease.</p>
                 <div class="auth-hero-dots">
                     <div class="auth-hero-dot active"></div>

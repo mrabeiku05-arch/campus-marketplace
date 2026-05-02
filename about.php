@@ -11,8 +11,8 @@ function aboutCount(PDO $pdo, string $query): int
     }
 }
 
-$pageTitle = 'About Campus Marketplace';
-$metaDescription = 'Learn what Campus Marketplace is, how buying and selling works, and why students choose it for campus-focused shopping and selling.';
+$pageTitle = 'About | CampusMarketplace';
+$metaDescription = 'Learn about CampusMarketplace — the #1 platform for student-to-student commerce.';
 
 $browseUrl = getSpaUrl();
 $sellUrl = isLoggedIn() ? $baseUrl . 'add_product.php' : $baseUrl . 'register.php';
@@ -515,12 +515,12 @@ require_once 'includes/header.php';
 <main class="about-shell">
     <section class="about-hero">
         <div class="about-hero-content">
-            <div class="about-eyebrow">About Campus Marketplace</div>
+            <div class="about-eyebrow">About CampusMarketplace</div>
             <div>
                 <h1>The campus-first marketplace built for real student life.</h1>
             </div>
             <p>
-                Campus Marketplace is a focused buying and selling platform for students and campus communities.
+                CampusMarketplace is a focused buying and selling platform for students and campus communities.
                 It brings listings, direct messaging, order flow, seller storefronts, and trusted discovery into one place
                 so people can move items faster without relying on scattered group chats and noisy social feeds.
             </p>
@@ -670,7 +670,7 @@ require_once 'includes/header.php';
                 <p class="about-kicker">Seller Tiers</p>
                 <h2>Choose the setup that matches how seriously you want to sell.</h2>
                 <p>
-                    Campus Marketplace supports different seller levels so casual users and more active sellers can both
+                    CampusMarketplace supports different seller levels so casual users and more active sellers can both
                     operate comfortably. The core idea is simple: start small, grow when you need more reach, and keep your shop
                     looking organized as your catalog expands.
                 </p>
@@ -748,7 +748,7 @@ require_once 'includes/header.php';
 
         <section class="about-section">
             <div class="about-accent-band">
-                <p class="about-kicker">Why Choose Campus Marketplace</p>
+                <p class="about-kicker">Why Choose CampusMarketplace</p>
                 <h2>Because students need something faster, cleaner, and more relevant than random online marketplaces.</h2>
                 <div class="about-card-grid">
                     <article class="about-card">
@@ -860,7 +860,7 @@ require_once 'includes/header.php';
                 <div class="about-cta-row">
                     <div>
                         <p class="about-kicker" style="color: rgba(255,255,255,0.82);">Ready To Explore?</p>
-                        <h2 style="margin-bottom:0.65rem; color:#fff;">Find your next deal or open your shop on Campus Marketplace.</h2>
+                        <h2 style="margin-bottom:0.65rem; color:#fff;">Find your next deal or open your shop on CampusMarketplace.</h2>
                         <p>Browse what is already live, or create an account and start listing in a way that feels organized from day one.</p>
                     </div>
                     <div class="about-hero-actions">

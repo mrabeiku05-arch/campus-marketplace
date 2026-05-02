@@ -2,6 +2,8 @@
 require_once 'includes/db.php';
 if (isLoggedIn()) redirect(isAdmin() ? 'admin/' : 'dashboard.php');
 
+$pageTitle = 'Login | CampusMarketplace';
+
 $error = getFlashMessage('auth_error');
 $success = getFlashMessage('auth_success');
 $googleEnabled = googleSignInEnabled();
@@ -383,7 +385,7 @@ require_once 'includes/header.php';
                 <div style="background:rgba(124,58,237,0.06); border:1px solid rgba(124,58,237,0.12); border-radius:12px; padding:0.75rem 1rem; margin-bottom:1.5rem; display:flex; align-items:flex-start; gap:0.75rem;">
                     <div style="background:var(--auth-primary); color:#fff; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:0.7rem; margin-top:2px;">i</div>
                     <p style="margin:0; font-size:0.82rem; color:var(--auth-text); line-height:1.4;">
-                        <strong>Security Reminder:</strong> Campus Marketplace staff will <u>never</u> ask for your password via WhatsApp or email.
+                        <strong>Security Reminder:</strong> CampusMarketplace staff will <u>never</u> ask for your password via WhatsApp or email.
                     </p>
                 </div>
 
@@ -507,7 +509,7 @@ require_once 'includes/header.php';
                         <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                     </svg>
                 </div>
-                <h2 class="auth-hero-title">Your Campus Marketplace</h2>
+                <h2 class="auth-hero-title">Your CampusMarketplace</h2>
                 <p class="auth-hero-desc">Buy, sell, and connect safely with fellow students. Your data is protected and your transactions are secure.</p>
                 <div class="auth-hero-dots">
                     <div class="auth-hero-dot"></div>

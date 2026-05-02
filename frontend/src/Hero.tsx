@@ -156,7 +156,7 @@ export default function Hero() {
         {/* ── Hero Content ── */}
         <div className="relative z-10 flex flex-col items-center text-center px-6 w-full max-w-4xl pt-[14vh]">
 
-          {/* 1. Main Heading — "Campus Marketplace" */}
+          {/* 1. Main Heading — "CampusMarketplace" */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -171,7 +171,7 @@ export default function Hero() {
               fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
             }}
           >
-            Campus Marketplace
+            CampusMarketplace
           </motion.h1>
 
           {/* 2. Animated cycling word — "Buy", "Sell", "Advertise" */}
@@ -376,7 +376,7 @@ export default function Hero() {
               fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800,
               letterSpacing: '-0.03em', lineHeight: 1.1, margin: 0,
             }}>
-              Why Campus Marketplace?
+              Why CampusMarketplace?
             </h2>
           </motion.div>
 

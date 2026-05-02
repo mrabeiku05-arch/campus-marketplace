@@ -5,7 +5,7 @@
             <div>
                 <h3 style="font-size:1rem; font-weight:800; margin-bottom:0.4rem; display:flex; align-items:center; gap:4px;">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                    Campus Marketplace
+                    CampusMarketplace
                 </h3>
                 <p style="color:var(--text-muted); font-size:0.7rem; line-height:1.4;">Everything you need on campus.<br/>Connect. Buy. Sell easily.</p>
                 <div style="margin-top:0.75rem; display:flex; gap:0.5rem;">
@@ -49,7 +49,7 @@
             </div>
         </div>
         <div style="text-align:center; padding-top:1rem; border-top:1px solid var(--border); color:var(--text-muted); font-size:0.7rem;">
-            &copy; <?= date('Y') ?> Campus Marketplace
+            &copy; <?= date('Y') ?> CampusMarketplace
         </div>
     </footer>
 
@@ -65,11 +65,11 @@
                 <div id="termsProgressBar" style="position:absolute; top:0; left:0; height:100%; width:0%; background:#7c3aed; transition:width 0.1s;"></div>
             </div>
             <div id="modalTermsContent" style="flex:1; overflow-y:auto; padding:2rem 2.5rem; font-size:0.95rem; line-height:1.7; color:var(--text-main);">
-                <h4 style="font-size:1.4rem; margin-bottom:1.5rem;">Campus Marketplace Platform</h4>
+                <h4 style="font-size:1.4rem; margin-bottom:1.5rem;">CampusMarketplace Platform</h4>
                 <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:2rem;">Last Updated: March 29, 2026</p>
                 <div id="tc-body-anchor">
                     <h5 style="margin-top:1.5rem; font-weight:700;">1. INTRODUCTION</h5>
-                    <p>Welcome to Campus Marketplace. By accessing or using this platform, you agree to comply with and be bound by these Terms and Conditions. If you do not agree, you must not use this platform.</p>
+                    <p>Welcome to CampusMarketplace. By accessing or using this platform, you agree to comply with and be bound by these Terms and Conditions. If you do not agree, you must not use this platform.</p>
                     
                     <h5 style="margin-top:1.5rem; font-weight:700;">2. USER ELIGIBILITY</h5>
                     <ul>
@@ -253,7 +253,7 @@
             <div id="ai-messages" style="flex:1; padding:1rem; overflow-y:auto; display:flex; flex-direction:column; gap:0.75rem; font-size:0.85rem;">
                 <div style="display:flex; flex-direction:column; align-items:flex-start; max-width:85%;">
                     <div style="background:var(--card-bg); padding:0.75rem 1rem; border-radius:14px 14px 14px 2px; border:1px solid var(--border); color:var(--text-main); font-size:0.85rem; line-height:1.5;">
-                        Hi there! I'm the Campus Marketplace Assistant. I can help with buying, selling, safety tips, and navigating the site. Ask me anything!
+                        Hi there! I'm the CampusMarketplace Assistant. I can help with buying, selling, safety tips, and navigating the site. Ask me anything!
                     </div>
                 </div>
             </div>
@@ -684,7 +684,7 @@
                         lastNotificationId = id;
                     }
 
-                    const title = item.title || 'Campus Marketplace';
+                    const title = item.title || 'CampusMarketplace';
                     const message = item.message || '';
                     const linkUrl = item.link_url || '';
 

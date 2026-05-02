@@ -97,7 +97,7 @@ if (!$totpEnabled) {
         $setupSecret = generate_totp_secret();
         $_SESSION['pending_totp_setup_secret'] = $setupSecret;
     }
-    $issuer = rawurlencode('Campus Marketplace');
+    $issuer = rawurlencode('CampusMarketplace');
     $account = rawurlencode($user['username']);
     $otpauthUrl = "otpauth://totp/{$issuer}:{$account}?secret={$setupSecret}&issuer={$issuer}&digits=6&period=30";
 }

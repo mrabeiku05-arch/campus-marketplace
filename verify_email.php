@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['resend'])) {
             $email = $stmt->fetchColumn();
             
             if ($email) {
-                sendMarketplaceEmail($email, 'Verify your email | Campus Marketplace', $html);
+                sendMarketplaceEmail($email, 'Verify your email | CampusMarketplace', $html);
                 $success = 'Verification email resent! Please check your inbox.';
                 $isPending = true;
             }

@@ -152,7 +152,7 @@ $cat_desc = ($category && isset($cat_descriptions[$category])) ? $cat_descriptio
 <!-- FRAUD NOTICE -->
 <div class="notice-box-inline mb-4" style="max-width:800px; margin-left:auto; margin-right:auto; background:rgba(255,204,0,0.15); border:1px solid rgba(255,204,0,0.5); padding:15px; border-radius:12px; text-align:center; margin-top:20px;">
     <strong><span style="font-size:1.1rem; vertical-align:middle; margin-right:5px;">ΓÜá∩╕Å</span> SAFETY NOTICE:</strong>
-    <span>All transactions should be made in person. Sending money online without meeting the seller is at your own risk. Campus Marketplace will not be held accountable for online transactions.</span>
+    <span>All transactions should be made in person. Sending money online without meeting the seller is at your own risk. CampusMarketplace will not be held accountable for online transactions.</span>
 </div>
 
 <!-- FILTERS -->

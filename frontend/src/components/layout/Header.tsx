@@ -74,7 +74,7 @@ export default function Header() {
     <nav style={{position:'sticky', top:0, zIndex:999999, background: isDark ? '#1c1c1e' : '#ffffff', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)'}`, transition:'background 0.3s, border-color 0.3s', padding:'0 5%'}}>
       <div className="nav-shell" style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap:'1rem', height:'58px', maxWidth:'1400px', margin:'0 auto', width:'100%'}}>
         {/* Brand */}
-        <Link to="/" className="nav-brand-link" aria-label="Campus Marketplace home" title="Campus Marketplace" style={{color:'var(--text-main)', textDecoration:'none', display:'flex', alignItems:'center', justifyContent:'center', width:'40px', height:'40px', borderRadius:'12px', flexShrink:0, transition:'background 0.2s, opacity 0.2s'}} onClick={closeMobile}>
+        <Link to="/" className="nav-brand-link" aria-label="CampusMarketplace home" title="CampusMarketplace" style={{color:'var(--text-main)', textDecoration:'none', display:'flex', alignItems:'center', justifyContent:'center', width:'40px', height:'40px', borderRadius:'12px', flexShrink:0, transition:'background 0.2s, opacity 0.2s'}} onClick={closeMobile}>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         </Link>
 
