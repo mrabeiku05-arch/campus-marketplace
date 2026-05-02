@@ -931,8 +931,9 @@ function getUser(PDO $pdo, int $id): ?array {
 }
 
 function getUnreadCount(PDO $pdo, int $userId): int {
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM messages WHERE receiver_id = ? AND is_read = ?");
-    $stmt->execute([$userId, 0]);
+    $bool = sqlBool(false, $pdo);
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM messages WHERE receiver_id = ? AND is_read = $bool");
+    $stmt->execute([$userId]);
     return (int)$stmt->fetchColumn();
 }
 

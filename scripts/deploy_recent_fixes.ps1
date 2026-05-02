@@ -6,7 +6,8 @@ $files = @(
     'backend/routes/messages.php',
     'chat.php',
     'dashboard.php',
-    'edit_profile.php'
+    'edit_profile.php',
+    'db.php'
 )
 
 $ftpBase = 'ftp://ftp-campusmarketplace.alwaysdata.net/www'
