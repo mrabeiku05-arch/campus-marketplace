@@ -6,9 +6,8 @@ require_once 'header.php';
 /* NOTE: This <style> block comes AFTER header.php so it overrides app.css */
 /* ADMIN USERS PAGE ALIGNMENT FIXES */
 .glass {
-    backdrop-filter: blur(12px);
-    background: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+background: rgb(255, 255, 255);
+    border: 1px solid rgb(255, 255, 255);
     border-radius: 16px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
@@ -23,7 +22,7 @@ require_once 'header.php';
 }
 
 #users-table th {
-    background: rgba(0, 0, 0, 0.02);
+    background: rgb(0, 0, 0);
     color: var(--text-muted);
     font-weight: 700;
     font-size: 0.75rem;
@@ -38,13 +37,13 @@ require_once 'header.php';
 #users-table td {
     padding: 0.75rem 0.75rem;
     vertical-align: middle;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.06);
+    border-bottom: 1px solid rgb(128, 128, 128);
     line-height: 1.4;
     white-space: nowrap;
 }
 
 #users-table tr:hover {
-    background: rgba(124, 58, 237, 0.02);
+    background: rgb(124, 58, 237);
 }
 
 /* Column widths */
@@ -102,21 +101,21 @@ require_once 'header.php';
 }
 
 .badge-gold {
-    background: linear-gradient(135deg, rgba(250, 204, 21, 0.15), rgba(250, 204, 21, 0.05));
+    background: linear-gradient(135deg, rgb(250, 204, 21), rgb(250, 204, 21));
     color: #ca8a04;
-    border: 1px solid rgba(250, 204, 21, 0.2);
+    border: 1px solid rgb(250, 204, 21);
 }
 
 .badge-blue {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05));
+    background: linear-gradient(135deg, rgb(59, 130, 246), rgb(59, 130, 246));
     color: #1e40af;
-    border: 1px solid rgba(59, 130, 246, 0.2);
+    border: 1px solid rgb(59, 130, 246);
 }
 
 .badge-rejected {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
+    background: linear-gradient(135deg, rgb(239, 68, 68), rgb(239, 68, 68));
     color: #dc2626;
-    border: 1px solid rgba(239, 68, 68, 0.2);
+    border: 1px solid rgb(239, 68, 68);
 }
 
 /* Action buttons */
@@ -216,7 +215,7 @@ table td:nth-child(7) {
     #users-table td:nth-child(2) { /* User */
         padding-top: 0;
         margin-bottom: 0.5rem;
-        border-bottom: 1px solid rgba(0,0,0,0.05);
+        border-bottom: 1px solid rgb(0, 0, 0);
         padding-bottom: 0.5rem;
     }
     #users-table td:nth-child(2)::before { display: none; }
@@ -224,7 +223,7 @@ table td:nth-child(7) {
     #users-table td:nth-child(10) { /* Actions */
         margin-top: 0.8rem;
         padding-top: 0.8rem;
-        border-top: 1px solid rgba(0,0,0,0.05);
+        border-top: 1px solid rgb(0, 0, 0);
         display: block;
     }
     #users-table td:nth-child(10)::before { display: block; margin-bottom: 0.5rem; }

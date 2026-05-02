@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!toast) {
                 toast = document.createElement('div');
                 toast.id = 'cm-toast';
-                toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:rgba(16,185,129,0.95);color:#fff;padding:14px 24px;border-radius:12px;font-size:0.9rem;font-weight:600;z-index:10000;box-shadow:0 10px 40px rgba(0,0,0,0.4);backdrop-filter:blur(10px);transition:all 0.3s;opacity:0;transform:translateY(20px);';
+                toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:rgba(16,185,129,0.95);color:#fff;padding:14px 24px;border-radius:12px;font-size:0.9rem;font-weight:600;z-index:10000;box-shadow:0 10px 40px rgba(0,0,0,0.4);transition:all 0.3s;opacity:0;transform:translateY(20px);';
                 document.body.appendChild(toast);
             }
             toast.textContent = msg;

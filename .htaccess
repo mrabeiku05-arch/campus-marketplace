@@ -46,8 +46,14 @@ DirectoryIndex public/index.html index.php
     RewriteRule .* - [L]
 
     # Default: serve React SPA from public/index.html
+    # EXCLUSION: Skip .php files and the admin/api/backend/includes directories
+    RewriteCond %{REQUEST_URI} ^/(api|admin|backend|includes)/ [NC,OR]
+    RewriteCond %{REQUEST_URI} \.php$ [NC]
+    RewriteRule .* - [L]
+
+    # Serve everything else to the React SPA
     RewriteCond %{REQUEST_URI} !\.(css|js|map|ico|png|jpg|jpeg|webp|gif|svg|mp4|woff|woff2|ttf|eot|json)$ [NC]
-    RewriteRule ^(?!api/|admin/|backend/|includes/)(.*)$ /public/index.html [L,QSA]
+    RewriteRule ^(.*)$ /public/index.html [L,QSA]
 </IfModule>
 
 AddDefaultCharset utf-8

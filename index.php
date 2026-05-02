@@ -217,7 +217,7 @@ $cat_desc = ($category && isset($cat_descriptions[$category])) ? $cat_descriptio
     <form action="index.php" method="GET" class="search-filter-row" style="display:flex; gap:0.75rem; width:100%; flex-wrap:wrap; align-items:center;" id="searchForm">
         <div style="flex:1; min-width:180px; position:relative;">
             <input type="text" name="search" id="searchInput" class="form-control" autocomplete="off" placeholder="Search products..." value="<?= htmlspecialchars($search) ?>" style="width:100%;">
-            <div id="searchSuggestions" style="display:none; position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--card-bg); border:1px solid var(--border); border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.15); z-index:9999; max-height:200px; overflow-y:auto; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);"></div>
+            <div id="searchSuggestions" style="display:none; position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--card-bg); border:1px solid var(--border); border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.15); z-index:9999; max-height:200px; overflow-y:auto;"></div>
         </div>
         <select name="category" class="form-control" style="max-width:160px;">
             <option value="">All Categories</option>
@@ -253,7 +253,7 @@ $cat_desc = ($category && isset($cat_descriptions[$category])) ? $cat_descriptio
                             <p style="font-size:0.68rem; letter-spacing:0.14em; text-transform:uppercase; opacity:0.78; margin:0 0 0.35rem; font-weight:700;">Sponsored</p>
                             <p style="font-size:1rem; font-weight:800; letter-spacing:-0.02em; margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"><?= htmlspecialchars($ad['title']) ?></p>
                         </div>
-                        <span style="background:rgba(255,255,255,0.14); backdrop-filter:blur(10px); color:#fff; font-size:0.62rem; padding:4px 10px; border-radius:999px; letter-spacing:0.08em; font-weight:700; border:1px solid rgba(255,255,255,0.15); flex-shrink:0;">AD</span>
+                        <span style="background:rgba(255,255,255,0.14); color:#fff; font-size:0.62rem; padding:4px 10px; border-radius:999px; letter-spacing:0.08em; font-weight:700; border:1px solid rgba(255,255,255,0.15); flex-shrink:0;">AD</span>
                     </div>
                 </div>
             </div>
@@ -520,7 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <?php endif; ?>
                     <?php $promo = isset($p['promo_tag']) ? trim($p['promo_tag']) : ''; ?>
                     <?php if($promo): ?>
-                    <span class="boosted-badge" style="top:8px; bottom:auto; left:8px; background:rgba(0,0,0,0.75); backdrop-filter:blur(8px); color:#fff; font-size:0.6rem; padding:0.3rem 0.6rem; border-radius:8px; font-weight:600; display:inline-flex; align-items:center; gap:0.25rem;">
+                    <span class="boosted-badge" style="top:8px; bottom:auto; left:8px; background:rgba(0,0,0,0.75); color:#fff; font-size:0.6rem; padding:0.3rem 0.6rem; border-radius:8px; font-weight:600; display:inline-flex; align-items:center; gap:0.25rem;">
                         <?= getPromoTagIcon($promo) ?> <?= htmlspecialchars($promo) ?>
                     </span>
                     <?php endif; ?>

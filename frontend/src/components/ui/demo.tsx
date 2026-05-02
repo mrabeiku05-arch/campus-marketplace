@@ -86,7 +86,7 @@ export default function PricingCreative({
 
           const cardClassName = isFeatured
             ? "relative z-20 w-full max-w-[22rem] rounded-3xl border-4 px-8 py-10 text-[#1a1a1a] shadow-xl transition-transform hover:scale-[1.02] md:w-80 md:scale-110 md:px-10 md:py-14 md:hover:scale-[1.12]"
-            : "relative z-10 w-full max-w-[20rem] rounded-2xl border px-7 py-8 text-foreground shadow-[0_0_0_1px_rgba(255,255,255,.05)_inset] backdrop-blur-md transition-transform hover:scale-105 md:w-72 md:px-8 md:py-10"
+            : "relative z-10 w-full max-w-[20rem] rounded-2xl border px-7 py-8 text-foreground shadow-sm transition-transform hover:scale-105 md:w-72 md:px-8 md:py-10 bg-card"
 
           return (
             <motion.div

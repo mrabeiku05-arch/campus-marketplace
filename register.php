@@ -306,7 +306,7 @@ require_once 'includes/header.php';
     .auth-icon-wrap { width: 48px; height: 48px; margin-bottom: 0.75rem; }
 }
 .auth-hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #0f0f1a 0%, #2e1065 50%, #0f0f1a 100%); }
-.auth-blob { position: absolute; border-radius: 9999px; filter: blur(40px); mix-blend-mode: screen; opacity: 0.65; animation: authBlob 7s infinite; }
+.auth-blob { position: absolute; border-radius: 9999px; mix-blend-mode: screen; opacity: 0.3; animation: authBlob 7s infinite; }
 .auth-blob-1 { width: 18rem; height: 18rem; background: hsla(280,80%,60%,0.4); top: 0; left: -2rem; }
 .auth-blob-2 { width: 18rem; height: 18rem; background: hsla(192,100%,50%,0.35); top: 0; right: -2rem; animation-delay: 2s; }
 .auth-blob-3 { width: 18rem; height: 18rem; background: hsla(240,80%,60%,0.35); bottom: -2rem; left: 5rem; animation-delay: 4s; }
@@ -314,7 +314,7 @@ require_once 'includes/header.php';
 .auth-hero-wave { position: absolute; inset: 0; opacity: 0.2; pointer-events: none; }
 .auth-hero-content { position: relative; z-index: 10; display: flex; align-items: center; justify-content: center; padding: 3rem; width: 100%; }
 .auth-hero-inner { text-align: center; max-width: 26rem; }
-.auth-hero-icon-badge { display: inline-flex; border-radius: 9999px; padding: 0.875rem; background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); color: #fff; margin-bottom: 1.5rem; }
+.auth-hero-icon-badge { display: inline-flex; border-radius: 9999px; padding: 0.875rem; background: rgba(255,255,255,0.1); color: #fff; margin-bottom: 1.5rem; }
 .auth-hero-title { font-size: 2.25rem; font-weight: 800; color: #fff; letter-spacing: -0.04em; margin: 0 0 1rem; line-height: 1.15; }
 .auth-hero-desc { font-size: 1.05rem; color: rgba(255,255,255,0.78); margin: 0 0 1.75rem; line-height: 1.6; }
 .auth-hero-dots { display: flex; justify-content: center; gap: 0.5rem; }
@@ -587,7 +587,7 @@ require_once 'includes/header.php';
 </div>
 
 <!-- Inline Terms Modal for Registration -->
-<div id="regTermsModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.65); backdrop-filter:blur(8px); z-index:1000000; align-items:center; justify-content:center; padding:20px;">
+<div id="regTermsModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:1000000; align-items:center; justify-content:center; padding:20px;">
     <div style="width:100%; max-width:780px; height:85vh; border-radius:28px; display:flex; flex-direction:column; overflow:hidden; position:relative; box-shadow:0 30px 100px rgba(0,0,0,0.35); background:var(--card-bg, #fff); border:1px solid rgba(0,0,0,0.07);">
         <div style="padding:1.25rem 1.75rem; border-bottom:1px solid rgba(0,0,0,0.08); display:flex; justify-content:space-between; align-items:center;">
             <h3 style="margin:0; font-size:1.1rem; font-weight:800;">Terms & Conditions</h3>

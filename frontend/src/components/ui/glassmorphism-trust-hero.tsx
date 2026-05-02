@@ -71,7 +71,7 @@ export default function HeroSection() {
 
           <div className="lg:col-span-7 flex flex-col justify-center space-y-8 pt-8">
             <div className="animate-fade-in delay-100">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 backdrop-blur-md transition-colors hover:bg-white/10">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-zinc-900 px-3 py-1.5 transition-colors hover:bg-zinc-800">
                 <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-zinc-300 flex items-center gap-2">
                   Award-Winning Design
                   <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
@@ -81,10 +81,6 @@ export default function HeroSection() {
 
             <h1
               className="animate-fade-in delay-200 text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-medium tracking-tighter leading-[0.9]"
-              style={{
-                maskImage: "linear-gradient(180deg, black 0%, black 80%, transparent 100%)",
-                WebkitMaskImage: "linear-gradient(180deg, black 0%, black 80%, transparent 100%)"
-              }}
             >
               The Next Gen<br />
               <span className="bg-gradient-to-br from-white via-white to-[#0071e3] bg-clip-text text-transparent">
@@ -104,7 +100,7 @@ export default function HeroSection() {
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </a>
 
-              <a href={`${BASE}dashboard.php`} className="group inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-8 py-4 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/10 hover:border-white/20">
+              <a href={`${BASE}dashboard.php`} className="group inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-zinc-900 px-8 py-4 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 hover:border-white/30">
                 <Play className="w-4 h-4 fill-current" />
                 Your Dashboard
               </a>
@@ -112,12 +108,12 @@ export default function HeroSection() {
           </div>
 
           <div className="lg:col-span-5 space-y-6 lg:mt-12 block">
-            <div className="animate-fade-in delay-500 relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl shadow-2xl">
-              <div className="absolute top-0 right-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-white/5 blur-3xl pointer-events-none" />
+            <div className="animate-fade-in delay-500 relative overflow-hidden rounded-3xl border border-white/20 bg-zinc-900 p-8 shadow-2xl">
+              <div className="absolute top-0 right-0 -mr-16 -mt-16 h-64 w-64 rounded-full bg-blue-500/10 pointer-events-none" />
 
               <div className="relative z-10">
                 <div className="flex items-center gap-4 mb-8">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/20">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-800 ring-1 ring-white/20">
                     <Target className="h-6 w-6 text-white" />
                   </div>
                   <div>
@@ -131,7 +127,7 @@ export default function HeroSection() {
                     <span className="text-zinc-400">Platform Happiness</span>
                     <span className="text-white font-medium">99%</span>
                   </div>
-                  <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-800/50">
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-800">
                     <div className="h-full w-[99%] rounded-full bg-gradient-to-r from-white to-[#0071e3]" />
                   </div>
                 </div>
@@ -147,7 +143,7 @@ export default function HeroSection() {
                 </div>
 
                 <div className="mt-8 flex flex-wrap gap-2">
-                  <div className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-medium tracking-wide text-zinc-300">
+                  <div className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-zinc-800 px-3 py-1 text-[10px] font-medium tracking-wide text-zinc-300">
                     <span className="relative flex h-2 w-2">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>

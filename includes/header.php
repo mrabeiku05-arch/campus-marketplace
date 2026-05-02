@@ -84,7 +84,7 @@ if (file_exists(__DIR__ . '/../.maintenance') && !isAdmin()) {
 
 </head>
 <body class="<?= isLoggedIn() ? 'is-logged-in' : '' ?>">
-    <nav style="position:sticky; top:0; z-index:999999; backdrop-filter:saturate(180%) blur(24px); -webkit-backdrop-filter:saturate(180%) blur(24px); background:var(--card-bg, rgba(255,255,255,0.75)); border-bottom:1px solid var(--border, rgba(0,0,0,0.07)); transition: background 0.3s, border-color 0.3s; padding: 0 5%;">
+    <nav style="position:sticky; top:0; z-index:999999; background:var(--card-bg, #ffffff); border-bottom:1px solid var(--border, #e5e7eb); transition: background 0.3s, border-color 0.3s; padding: 0 5%;">
         <div class="nav-shell" style="display:flex; align-items:center; justify-content:space-between; gap:1rem; height:58px; max-width:1400px; margin:0 auto; width:100%;">
             <!-- Brand -->
             <a href="<?= $baseUrl ?>" class="nav-brand-link" aria-label="Campus Marketplace home" title="Campus Marketplace" style="color:var(--text-main); text-decoration:none; display:flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:12px; flex-shrink:0; transition:background 0.2s, opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
@@ -93,8 +93,8 @@ if (file_exists(__DIR__ . '/../.maintenance') && !isAdmin()) {
 
             <!-- Center Nav Links -->
             <div class="nav-links" id="mobileNavLinks" style="display:flex; align-items:center; justify-content:center; gap:0.5rem; flex:1; min-width:0;">
-                <a href="<?= getSpaUrl() ?>" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">Explore</a>
-                <a href="<?= $baseUrl ?>about.php" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">About</a>
+                <a href="<?= getSpaUrl() ?>" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='#f3f4f6'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">Explore</a>
+                <a href="<?= $baseUrl ?>about.php" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='#f3f4f6'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">About</a>
 
                 <!-- Categories Dropdown -->
                 <div class="cat-dropdown" style="position:relative; display:inline-block; flex-shrink:1;">
@@ -102,7 +102,7 @@ if (file_exists(__DIR__ . '/../.maintenance') && !isAdmin()) {
                         Categories
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
                     </a>
-                    <div id="catMenu" class="cat-dropdown-menu" style="display:none; position:absolute; top:calc(100% + 8px); left:50%; transform:translateX(-50%); z-index:999; width:220px; background:var(--card-bg); backdrop-filter:saturate(180%) blur(24px); -webkit-backdrop-filter:saturate(180%) blur(24px); border:1px solid var(--border); border-radius:16px; box-shadow:0 12px 48px rgba(0,0,0,0.12); overflow:hidden;">
+                    <div id="catMenu" class="cat-dropdown-menu" style="display:none; position:absolute; top:calc(100% + 8px); left:50%; transform:translateX(-50%); z-index:999; width:220px; background:var(--card-bg); border:1px solid var(--border); border-radius:16px; box-shadow:0 8px 20px #d1d5db; overflow:hidden;">
                         <a href="<?= htmlspecialchars(getSpaUrl('/', ['category' => 'Computer & Accessories']), ENT_QUOTES, 'UTF-8') ?>" class="cat-item" style="font-size:0.8rem; padding:0.6rem 0.9rem;">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                             Computer &amp; Accessories
@@ -144,26 +144,26 @@ if (file_exists(__DIR__ . '/../.maintenance') && !isAdmin()) {
                         $alertsUrl = $accountHomeUrl;
                         $messagesUrl = $baseUrl . 'chat.php';
                     ?>
-                    <a href="<?= $baseUrl ?>leaderboard.php" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">Rank</a>
-                    <a href="<?= $accountHomeUrl ?>" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'"><?= htmlspecialchars($accountHomeLabel, ENT_QUOTES, 'UTF-8') ?></a>
-                    <a href="<?= $baseUrl ?>security.php" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">Security</a>
-                    <a href="<?= $alertsUrl ?>" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; position:relative; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">
+                    <a href="<?= $baseUrl ?>leaderboard.php" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='#f3f4f6'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">Rank</a>
+                    <a href="<?= $accountHomeUrl ?>" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='#f3f4f6'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'"><?= htmlspecialchars($accountHomeLabel, ENT_QUOTES, 'UTF-8') ?></a>
+                    <a href="<?= $baseUrl ?>security.php" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='#f3f4f6'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">Security</a>
+                    <a href="<?= $alertsUrl ?>" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; position:relative; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='#f3f4f6'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">
                         Alerts
                         <span class="notif-badge notif-unread-badge" style="<?= $unreadNotifications > 0 ? 'display:flex;' : 'display:none;' ?>"><?= $unreadNotifications ?></span>
                     </a>
-                    <a href="<?= $messagesUrl ?>" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; position:relative; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">
+                    <a href="<?= $messagesUrl ?>" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; position:relative; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='#f3f4f6'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">
                         Messages
                         <span class="notif-badge msg-unread-badge" style="<?= $unread > 0 ? 'display:flex;' : 'display:none;' ?>"><?= $unread ?></span>
                     </a>
                     <?php if($isAdminMainAppView): ?>
-                        <a href="<?= $baseUrl ?>admin/" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">Admin Panel</a>
+                        <a href="<?= $baseUrl ?>admin/" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.6rem; border-radius:10px; transition:all 0.2s; text-decoration:none; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='var(--text-main)'; this.style.background='#f3f4f6'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">Admin Panel</a>
                     <?php endif; ?>
                     <?php if(isSeller()): ?>
                         <a href="<?= $baseUrl ?>add_product.php" class="react-liquid-btn" data-label="+ Sell" style="display:inline-flex; align-items:center; justify-content:center; min-height:38px; flex-shrink:0; transform:scale(0.8);"></a>
                     <?php endif; ?>
-                    <a href="<?= $baseUrl ?>logout.php" class="nav-pill-link" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.75rem; border-radius:999px; transition:all 0.2s; text-decoration:none; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='#ff3b30'; this.style.background='rgba(255,59,48,0.06)'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">Sign Out</a>
+                    <a href="<?= $baseUrl ?>logout.php" class="nav-pill-link" style="color:var(--text-muted); font-weight:600; font-size:0.82rem; padding:0.4rem 0.75rem; border-radius:999px; transition:all 0.2s; text-decoration:none; white-space:nowrap; flex-shrink:1;" onmouseover="this.style.color='#ff3b30'; this.style.background='#ffe5e5'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">Sign Out</a>
                 <?php else: ?>
-                    <a href="<?= $baseUrl ?>login.php" class="nav-pill-link" style="color:var(--text-muted); font-weight:500; font-size:0.85rem; padding:0.4rem 0.85rem; border-radius:999px; transition:all 0.2s; text-decoration:none;" onmouseover="this.style.color='var(--text-main)'; this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">Sign In</a>
+                    <a href="<?= $baseUrl ?>login.php" class="nav-pill-link" style="color:var(--text-muted); font-weight:500; font-size:0.85rem; padding:0.4rem 0.85rem; border-radius:999px; transition:all 0.2s; text-decoration:none;" onmouseover="this.style.color='var(--text-main)'; this.style.background='#f3f4f6'" onmouseout="this.style.color='var(--text-muted)'; this.style.background='transparent'">Sign In</a>
                     <a href="<?= $baseUrl ?>register.php" style="background:#7c3aed; color:#fff; font-weight:600; font-size:0.85rem; padding:0.5rem 1.1rem; min-height:48px; border-radius:980px; text-decoration:none; transition:all 0.2s; display:inline-flex; align-items:center; justify-content:center;" onmouseover="this.style.background='#6d28d9'" onmouseout="this.style.background='#7c3aed'">Sign Up</a>
                 <?php endif; ?>
             </div>
@@ -171,9 +171,9 @@ if (file_exists(__DIR__ . '/../.maintenance') && !isAdmin()) {
             <!-- Right-side icons -->
             <div style="display:flex; align-items:center; gap:12px; flex-shrink:0;">
                 <div id="react-theme-toggle"></div>
-                <a href="javascript:void(0)" onclick="if(typeof openSideCart === 'function') openSideCart(); return false;" style="position:relative; color:var(--text-main); text-decoration:none; padding:6px; border-radius:8px; transition:all 0.2s; display:flex; align-items:center; justify-content:center;" title="Cart" onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'">
+                <a href="javascript:void(0)" onclick="if(typeof openSideCart === 'function') openSideCart(); return false;" style="position:relative; color:var(--text-main); text-decoration:none; padding:6px; border-radius:8px; transition:all 0.2s; display:flex; align-items:center; justify-content:center;" title="Cart" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='transparent'">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                    <span class="cart-count-badge" style="display:none; position:absolute; top:-5px; right:-6px; background:#ff3b30; color:#fff; font-size:0.6rem; font-weight:700; width:17px; height:17px; border-radius:50%; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(255,59,48,0.4);">0</span>
+                    <span class="cart-count-badge" style="display:none; position:absolute; top:-5px; right:-6px; background:#ff3b30; color:#fff; font-size:0.6rem; font-weight:700; width:17px; height:17px; border-radius:50%; align-items:center; justify-content:center; box-shadow:0 2px 8px rgb(255, 59, 48);">0</span>
                 </a>
                 <button class="mobile-toggle" id="mobileNavToggle" onclick="toggleMobileNav()" style="color:var(--text-main); cursor:pointer; background:none; border:none; padding:6px; border-radius:8px;" aria-label="Toggle menu">
                     <svg id="menuIconOpen" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -195,8 +195,6 @@ if (file_exists(__DIR__ . '/../.maintenance') && !isAdmin()) {
             closeIcon.style.display = 'none';
             document.body.style.overflow = '';
             document.body.classList.remove('nav-open');
-            navBar.style.backdropFilter = '';
-            navBar.style.webkitBackdropFilter = '';
             navBar.style.background = '';
         } else {
             navLinks.classList.add('open');
@@ -204,8 +202,6 @@ if (file_exists(__DIR__ . '/../.maintenance') && !isAdmin()) {
             closeIcon.style.display = '';
             document.body.style.overflow = 'hidden';
             document.body.classList.add('nav-open');
-            navBar.style.backdropFilter = 'none';
-            navBar.style.webkitBackdropFilter = 'none';
             navBar.style.background = document.documentElement.classList.contains('dark-mode') ? '#1c1c1e' : '#ffffff';
         }
     }

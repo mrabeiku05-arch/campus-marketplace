@@ -187,7 +187,7 @@ require_once 'includes/header.php';
         border-radius: 18px;
         background: rgba(255, 255, 255, 0.12);
         border: 1px solid rgba(255, 255, 255, 0.14);
-        backdrop-filter: blur(18px);
+        background: rgba(255, 255, 255, 0.98);
     }
 
     .about-strip-card strong,

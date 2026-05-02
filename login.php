@@ -307,7 +307,7 @@ require_once 'includes/header.php';
 }
 .auth-blob {
     position: absolute; border-radius: 9999px;
-    filter: blur(40px); mix-blend-mode: screen; opacity: 0.65;
+    mix-blend-mode: screen; opacity: 0.3;
     animation: authBlob 7s infinite;
 }
 .auth-blob-1 { width: 18rem; height: 18rem; background: hsla(280,80%,60%,0.4); top: 0; left: -2rem; }
@@ -330,7 +330,7 @@ require_once 'includes/header.php';
 .auth-hero-inner { text-align: center; max-width: 26rem; }
 .auth-hero-icon-badge {
     display: inline-flex; border-radius: 9999px; padding: 0.875rem;
-    background: rgba(255,255,255,0.1); backdrop-filter: blur(8px);
+    background: rgba(255,255,255,0.1);
     color: #fff; margin-bottom: 1.5rem;
 }
 .auth-hero-title {

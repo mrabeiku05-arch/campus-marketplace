@@ -37,6 +37,18 @@ if "%~1"=="recent-fixes" (
     powershell -ExecutionPolicy Bypass -File "%~dp0scripts\deploy_recent_fixes.ps1"
     exit /b %errorlevel%
 )
+if "%~1"=="mobile-fix" (
+    powershell -ExecutionPolicy Bypass -File "%~dp0scripts\deploy_mobile_fix.ps1"
+    exit /b %errorlevel%
+)
+if "%~1"=="flat-ui" (
+    powershell -ExecutionPolicy Bypass -File "%~dp0scripts\deploy_flat_ui_cleanup.ps1"
+    exit /b %errorlevel%
+)
+if "%~1"=="deploy" (
+    call "%~dp0deploy_to_alwaysdata.bat"
+    exit /b %errorlevel%
+)
 
 :: Default: Run the full deployment script
 call "%~dp0deploy_to_alwaysdata.bat" %*

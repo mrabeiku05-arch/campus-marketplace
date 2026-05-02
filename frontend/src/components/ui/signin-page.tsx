@@ -84,13 +84,13 @@ const ErrorAlert = ({ message }: { message: string }) => (
 // ── Animated gradient hero panel ──
 const HeroPanel = ({ title, description, icon }: { title: string; description: string; icon: React.ReactNode }) => (
   <div className="hidden lg:flex flex-1 relative overflow-hidden">
-    <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900" />
+    <div className="absolute inset-0 bg-slate-900" />
     {/* Animated blobs */}
-    <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500/30 rounded-full mix-blend-screen filter blur-xl opacity-70 animate-blob" />
-    <div className="absolute top-0 -right-4 w-72 h-72 bg-cyan-500/30 rounded-full mix-blend-screen filter blur-xl opacity-70 animate-blob animation-delay-2000" />
-    <div className="absolute -bottom-8 left-20 w-72 h-72 bg-indigo-500/30 rounded-full mix-blend-screen filter blur-xl opacity-70 animate-blob animation-delay-4000" />
+    <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500/10 rounded-full mix-blend-screen filter opacity-70 animate-blob" />
+    <div className="absolute top-0 -right-4 w-72 h-72 bg-cyan-500/10 rounded-full mix-blend-screen filter opacity-70 animate-blob animation-delay-2000" />
+    <div className="absolute -bottom-8 left-20 w-72 h-72 bg-indigo-500/10 rounded-full mix-blend-screen filter opacity-70 animate-blob animation-delay-4000" />
     {/* Wave */}
-    <div className="absolute inset-0 opacity-20">
+    <div className="absolute inset-0 opacity-10">
       <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 1440 560">
         <defs>
           <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -103,7 +103,7 @@ const HeroPanel = ({ title, description, icon }: { title: string; description: s
     </div>
     <div className="relative z-10 flex items-center justify-center p-8 lg:p-12 w-full">
       <div className="text-center space-y-6 max-w-md">
-        <div className="inline-flex rounded-full p-3 bg-white/10 backdrop-blur-sm text-white mb-4">
+        <div className="inline-flex rounded-full p-3 bg-white/10 text-white mb-4">
           {icon}
         </div>
         <h2 className="text-3xl lg:text-4xl font-bold text-white">{title}</h2>

@@ -49,7 +49,7 @@
             toast.style.padding = '14px 16px';
             toast.style.boxShadow = '0 18px 45px rgba(0,0,0,0.25)';
             toast.style.border = '1px solid rgba(255,255,255,0.08)';
-            toast.style.backdropFilter = 'blur(18px)';
+            toast.style.background = 'rgba(0,0,0,0.85)';
             toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
             if (linkUrl) {
                 toast.style.cursor = 'pointer';
@@ -117,8 +117,7 @@
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <div id="profilePreviewOverlay" style="
         display:none; position:fixed; inset:0; z-index:1000001;
-        background:rgba(0,0,0,0.88); backdrop-filter:blur(18px);
-        -webkit-backdrop-filter:blur(18px);
+        background:rgba(0,0,0,0.92);
         align-items:center; justify-content:center;
         opacity:0; transition:opacity 0.3s ease;
         cursor:zoom-out;

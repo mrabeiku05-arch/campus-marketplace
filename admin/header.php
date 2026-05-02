@@ -3,13 +3,10 @@
 // so $page_title is always defined before isAdmin() runs.
 $page_title = $page_title ?? 'Admin';
 
-// FIX #1: Ensure session is started before isAdmin() tries to read $_SESSION.
-// Using session_status() prevents "session already started" warnings if
-// db.php or another include already called session_start().
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
+// IMPORTANT: Load db.php BEFORE any manual session_start().
+// db.php configures the custom session save path and secure cookie params.
+// Starting session early here can cause admin pages to read a different/empty
+// session store and falsely redirect to login.
 require_once '../includes/db.php';
 
 if (!isset($adminUnreadNotifications, $adminUserId, $admin2faVerified)) {
@@ -105,17 +102,16 @@ $logoutLink = $realSiteRoot . '/logout.php';
         }
 
         .glass {
-            backdrop-filter: blur(12px);
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+background: rgb(255, 255, 255);
+            border: 1px solid rgb(255, 255, 255);
             border-radius: 16px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
         }
 
         .dark-mode .glass {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.1);
+            background: rgb(255, 255, 255);
+            border-color: rgb(255, 255, 255);
         }
 
         @media (max-width: 768px) {
@@ -151,7 +147,7 @@ $logoutLink = $realSiteRoot . '/logout.php';
             min-width: 0;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1100px) {
 
             /* FIX #5: Show hamburger only on mobile */
             .mobile-toggle {
@@ -166,10 +162,9 @@ $logoutLink = $realSiteRoot . '/logout.php';
                 right: 0;
                 flex-direction: column;
                 /* FIX #6: Use a CSS variable-aware background so it respects dark mode
-                   instead of the hardcoded rgba(255,255,255,0.95) which was always white. */
-                background: var(--nav-mobile-bg, rgba(255, 255, 255, 0.95));
-                backdrop-filter: blur(24px);
-                border-bottom: 1px solid var(--border);
+                   instead of the hardcoded rgb(255, 255, 255) which was always white. */
+                background: var(--nav-mobile-bg, rgb(255, 255, 255));
+border-bottom: 1px solid var(--border);
                 padding: 1rem 0;
                 gap: 0;
                 align-items: stretch;
@@ -186,7 +181,7 @@ $logoutLink = $realSiteRoot . '/logout.php';
             .nav-links a {
                 display: block !important;
                 padding: 0.75rem 1.5rem !important;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                border-bottom: 1px solid rgb(0, 0, 0);
                 text-align: left;
                 min-width: auto !important;
                 flex-shrink: 0 !important;
@@ -203,7 +198,7 @@ $logoutLink = $realSiteRoot . '/logout.php';
 
         /* FIX #6: Dark mode override for mobile nav background */
         .dark-mode {
-            --nav-mobile-bg: rgba(20, 20, 25, 0.97);
+            --nav-mobile-bg: rgb(20, 20, 25);
         }
 
         /* FIX #7: Replace onmouseover/onmouseout inline handlers with CSS :hover
@@ -224,12 +219,12 @@ $logoutLink = $realSiteRoot . '/logout.php';
         .nav-link:hover,
         .nav-link:focus {
             color: var(--text-main);
-            background: rgba(0, 0, 0, 0.05);
+            background: rgb(0, 0, 0);
         }
 
         .dark-mode .nav-link:hover,
         .dark-mode .nav-link:focus {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgb(255, 255, 255);
         }
 
         .nav-link-cta {
@@ -263,8 +258,8 @@ $logoutLink = $realSiteRoot . '/logout.php';
         .stat-card-link:hover .stat-card,
         .stat-card-link:focus .stat-card {
             transform: translateY(-2px);
-            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
-            border-color: rgba(124, 58, 237, 0.22);
+            box-shadow: 0 16px 36px rgb(0, 0, 0);
+            border-color: rgb(124, 58, 237);
         }
 
         @media (max-width: 992px) {
@@ -282,7 +277,7 @@ $logoutLink = $realSiteRoot . '/logout.php';
             }
             .responsive-table thead { display: none; }
             .responsive-table tr {
-                background: rgba(255, 255, 255, 0.5);
+                background: rgb(255, 255, 255);
                 border: 1px solid var(--border);
                 border-radius: 12px;
                 margin-bottom: 1rem;
@@ -308,19 +303,19 @@ $logoutLink = $realSiteRoot . '/logout.php';
                 margin-right: 1rem;
             }
             .dark-mode .responsive-table tr {
-                background: rgba(255, 255, 255, 0.03);
+                background: rgb(255, 255, 255);
             }
         }
 
         .dark-mode nav {
-            background: rgba(20, 20, 25, 0.88) !important;
+            background: rgb(20, 20, 25) !important;
         }
     </style>
 </head>
 
 <body>
     <nav
-        style="position:sticky; top:0; z-index:9999; backdrop-filter:saturate(180%) blur(24px); -webkit-backdrop-filter:saturate(180%) blur(24px); background:rgba(255,255,255,0.85); border-bottom:1px solid var(--border); transition: all 0.3s ease; padding: 0 4%;">
+        style="position:sticky; top:0; z-index:9999; background:#ffffff; border-bottom:1px solid var(--border); transition: all 0.3s ease; padding: 0 4%;">
         <div
             style="display:flex; align-items:center; justify-content:space-between; height:58px; max-width:none; margin:0 auto; width:100%;">
 

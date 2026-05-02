@@ -13,7 +13,7 @@ require_once 'includes/header.php';
 </div>
 
 <style>
-    .wishlist-card { background:rgba(255,255,255,0.8); backdrop-filter:blur(24px); border:1px solid rgba(0,0,0,0.08); border-radius:16px; overflow:hidden; transition:all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,0.04); }
+    .wishlist-card { background:rgb(255,255,255); border:1px solid rgba(0,0,0,0.08); border-radius:16px; overflow:hidden; transition:all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,0.04); }
     .wishlist-card:hover { border-color:rgba(124,58,237,0.3); transform:translateY(-6px); box-shadow:0 16px 40px rgba(0,0,0,0.08), 0 0 20px rgba(124,58,237,0.15); }
     .wishlist-card-img-wrap { overflow:hidden; }
     .wishlist-card img { width:100%; height:160px; object-fit:cover; transition:transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); display:block; }

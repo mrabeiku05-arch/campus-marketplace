@@ -396,7 +396,7 @@ require_once 'includes/header.php';
             }
             .btn-add-cart { background:linear-gradient(135deg,#10b981,#059669); color:#fff; border:none; padding:0.9rem 1.5rem; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; width:100%; text-align:center; transition:all 0.3s; box-shadow:0 4px 15px rgba(16,185,129,0.3); }
             .btn-add-cart:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(16,185,129,0.4); }
-            .btn-wishlist { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:0.9rem 1.5rem; border-radius:12px; font-size:1rem; font-weight:600; cursor:pointer; width:100%; text-align:center; transition:all 0.3s; backdrop-filter:blur(10px); }
+            .btn-wishlist { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:0.9rem 1.5rem; border-radius:12px; font-size:1rem; font-weight:600; cursor:pointer; width:100%; text-align:center; transition:all 0.3s; }
             .btn-wishlist:hover { background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.3); }
             .btn-wishlist.wishlist-active { background:rgba(239,68,68,0.15); border-color:rgba(239,68,68,0.3); }
             @media(min-width:768px) {
@@ -691,7 +691,7 @@ require_once 'includes/header.php';
 
     <!-- STICKY MOBILE ADD TO CART -->
     <?php if($product['status'] === 'approved' && !$isOwner && $product['quantity'] > 0): ?>
-    <div id="stickyMobileCta" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:9999; background:rgba(255,255,255,0.92); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-top:1px solid rgba(0,0,0,0.08); padding:0.6rem 1rem; box-shadow:0 -4px 20px rgba(0,0,0,0.06);">
+    <div id="stickyMobileCta" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:9999; background:rgb(255,255,255); border-top:1px solid rgba(0,0,0,0.08); padding:0.6rem 1rem; box-shadow:0 -4px 20px rgba(0,0,0,0.06);">
         <div style="display:flex; align-items:center; gap:0.6rem; max-width:600px; margin:0 auto;">
             <div style="flex:1;">
                 <p style="font-weight:800; font-size:1.1rem; color:var(--primary); margin:0;">₵<?= number_format($product['price'], 2) ?></p>
@@ -812,7 +812,7 @@ require_once 'includes/header.php';
                                     <p style="font-size:0.68rem; letter-spacing:0.14em; text-transform:uppercase; opacity:0.78; margin:0 0 0.35rem; font-weight:700;">Featured Ad</p>
                                     <p style="font-size:1rem; font-weight:800; letter-spacing:-0.02em; margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"><?= htmlspecialchars($ad['title']) ?></p>
                                 </div>
-                                <span style="background:rgba(255,255,255,0.14); backdrop-filter:blur(10px); color:#fff; font-size:0.62rem; padding:4px 10px; border-radius:999px; letter-spacing:0.08em; font-weight:700; border:1px solid rgba(255,255,255,0.15); flex-shrink:0;">AD</span>
+                                <span style="background:rgba(255,255,255,0.14); color:#fff; font-size:0.62rem; padding:4px 10px; border-radius:999px; letter-spacing:0.08em; font-weight:700; border:1px solid rgba(255,255,255,0.15); flex-shrink:0;">AD</span>
                             </div>
                         </div>
                     </div>

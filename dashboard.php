@@ -731,7 +731,7 @@ require_once 'includes/header.php';
 }
 
 .glass {
-    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.95);
     background: rgba(255, 255, 255, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 16px;
@@ -988,7 +988,7 @@ require_once 'includes/header.php';
     transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s;
     opacity: 0;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
     border: 1px solid rgba(255,255,255,0.1);
     display: flex;
     align-items: center;
@@ -1355,7 +1355,7 @@ if($msg): ?><div class="alert alert-success fade-in"><?= htmlspecialchars($msg) 
         </script>
 
         <!-- Upgrade Modal -->
-        <div id="upgradeModal" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999999; align-items:center; justify-content:center; backdrop-filter:blur(15px); overflow-y:auto; -webkit-overflow-scrolling: touch;">
+        <div id="upgradeModal" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:9999999; align-items:center; justify-content:center; overflow-y:auto; -webkit-overflow-scrolling: touch;">
             <?php
             $tiers = dashboardSortTiers(array_values(getAccountTiers($pdo)));
             $tierPricingConfig = [];
@@ -1785,7 +1785,7 @@ if($msg): ?><div class="alert alert-success fade-in"><?= htmlspecialchars($msg) 
                                                 default => '#7c3aed'
                                             };
                                         ?>
-                                        <span class="badge" style="background:<?= $statusColor ?>; color:#fff; border:none; font-size:0.65rem; padding:4px 10px; font-weight:700; backdrop-filter:blur(10px);"><?= strtoupper($p['status']) ?></span>
+                                        <span class="badge" style="background:<?= $statusColor ?>; color:#fff; border:none; font-size:0.65rem; padding:4px 10px; font-weight:700;"><?= strtoupper($p['status']) ?></span>
                                     </div>
                                 </div>
                                 

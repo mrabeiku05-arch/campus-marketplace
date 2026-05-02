@@ -54,14 +54,14 @@
     </footer>
 
     <!-- TERMS & CONDITIONS MODAL -->
-    <div id="termsModal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); backdrop-filter:blur(8px); z-index:1000000; align-items:center; justify-content:center; padding:20px;">
-        <div class="glass" style="width:100%; max-width:800px; height:85vh; border-radius:32px; display:flex; flex-direction:column; overflow:hidden; position:relative; box-shadow:0 30px 100px rgba(0,0,0,0.3); animation:modalSlideUp 0.4s cubic-bezier(0.19, 1, 0.22, 1);">
+    <div id="termsModal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#111111; z-index:1000000; align-items:center; justify-content:center; padding:20px;">
+        <div class="glass" style="width:100%; max-width:800px; height:85vh; border-radius:32px; display:flex; flex-direction:column; overflow:hidden; position:relative; box-shadow:0 30px 100px rgb(0, 0, 0); animation:modalSlideUp 0.4s cubic-bezier(0.19, 1, 0.22, 1);">
             <div style="padding:1.5rem 2rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
                 <h3 style="margin:0; font-size:1.2rem; font-weight:800;">Terms & Conditions</h3>
-                <button onclick="closeTermsModal()" style="background:rgba(0,0,0,0.05); border:none; width:44px; height:44px; border-radius:50%; cursor:pointer; font-size:1.5rem; display:flex; align-items:center; justify-content:center; transition:0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.1)'" onmouseout="this.style.background='rgba(0,0,0,0.05)'">&times;</button>
+                <button onclick="closeTermsModal()" style="background:#f3f4f6; color:#111111; border:none; width:44px; height:44px; border-radius:50%; cursor:pointer; font-size:1.5rem; display:flex; align-items:center; justify-content:center; transition:0.2s;" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">&times;</button>
             </div>
             <!-- Progress Bar -->
-            <div style="width:100%; height:4px; background:rgba(124,58,237,0.1); position:relative; overflow:hidden;">
+            <div style="width:100%; height:4px; background:rgb(124, 58, 237); position:relative; overflow:hidden;">
                 <div id="termsProgressBar" style="position:absolute; top:0; left:0; height:100%; width:0%; background:#7c3aed; transition:width 0.1s;"></div>
             </div>
             <div id="modalTermsContent" style="flex:1; overflow-y:auto; padding:2rem 2.5rem; font-size:0.95rem; line-height:1.7; color:var(--text-main);">
@@ -155,7 +155,7 @@
                     <p>Users may choose from <?= count($tiers) ?> account levels, each with specific system-enforced limits and benefits:</p>
                     <ul style="list-style:none; padding-left:0;">
                     <?php foreach ($tiers as $tier): ?>
-                        <li style="margin-bottom:1rem; padding:10px; border:1px solid <?= htmlspecialchars($tier['badge']) ?>40; border-left: 4px solid <?= htmlspecialchars($tier['badge']) ?>; border-radius:12px; background: rgba(0,0,0,0.02);">
+                        <li style="margin-bottom:1rem; padding:10px; border:1px solid <?= htmlspecialchars($tier['badge']) ?>40; border-left: 4px solid <?= htmlspecialchars($tier['badge']) ?>; border-radius:12px; background:#ffffff;">
                             <h6 style="font-size:0.95rem; font-weight:800; margin-bottom:0.4rem; text-transform:capitalize;"><?= htmlspecialchars($tier['tier_name']) ?> Account</h6>
                             <p style="margin:0; font-size:0.85rem; line-height:1.5;">
                                 The <strong><?= ucfirst($tier['tier_name']) ?></strong> account is designed for <?= $tier['tier_name'] === 'basic' ? 'casual sellers' : 'serious businesses' ?>.
@@ -230,16 +230,16 @@
     <!-- CAMPUS MARKETPLACE AI ASSISTANT -->
     <div id="ai-assistant-widget" style="position:fixed; bottom:20px; right:20px; z-index:9999; font-family:'Inter', sans-serif;">
         <!-- Chat Head Button — Modern SVG icon -->
-        <button id="ai-chat-btn" onclick="toggleAIChat()" style="width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg, #7c3aed, #a78bfa); border:none; box-shadow:0 6px 20px rgba(124,58,237,0.4); color:white; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+        <button id="ai-chat-btn" onclick="toggleAIChat()" style="width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg, #7c3aed, #a78bfa); border:none; box-shadow:0 6px 20px rgb(124, 58, 237); color:white; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </button>
 
         <!-- Chat Window -->
-        <div id="ai-chat-window" style="display:none; position:absolute; bottom:72px; right:0; width:360px; max-width:90vw; height:460px; border-radius:20px; flex-direction:column; overflow:hidden; box-shadow:0 20px 48px rgba(0,0,0,0.2); border:1px solid var(--border); background:var(--card-bg); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);">
+        <div id="ai-chat-window" style="display:none; position:absolute; bottom:72px; right:0; width:360px; max-width:90vw; height:460px; border-radius:20px; flex-direction:column; overflow:hidden; box-shadow:0 8px 24px #d1d5db; border:1px solid var(--border); background:var(--card-bg);">
             <!-- Header -->
             <div style="background:#7c3aed; padding:0.85rem 1rem; color:white; display:flex; justify-content:space-between; align-items:center;">
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <div style="width:44px; height:44px; background:rgba(255,255,255,0.2); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                    <div style="width:44px; height:44px; background:rgb(255, 255, 255); border-radius:10px; display:flex; align-items:center; justify-content:center;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                     </div>
                     <div>
@@ -467,9 +467,7 @@
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <div id="profilePreviewOverlay" style="
         display:none; position:fixed; inset:0; z-index:1000001;
-        background:rgba(0,0,0,0.88); backdrop-filter:blur(18px);
-        -webkit-backdrop-filter:blur(18px);
-        align-items:center; justify-content:center;
+        background:#111111; align-items:center; justify-content:center;
         opacity:0; transition:opacity 0.3s ease;
         cursor:zoom-out;
     ">
@@ -481,26 +479,26 @@
             <!-- Close button -->
             <button onclick="closeProfilePreview()" aria-label="Close preview" style="
                 position:absolute; top:-12px; right:-12px;
-                background:rgba(255,255,255,0.12); border:none;
+                background:#f3f4f6; border:none;
                 width:42px; height:42px; border-radius:50%;
-                cursor:pointer; font-size:1.4rem; color:#fff;
+                cursor:pointer; font-size:1.4rem; color:#111111;
                 display:flex; align-items:center; justify-content:center;
                 transition:background 0.2s;
-            " onmouseover="this.style.background='rgba(255,255,255,0.22)'"
-               onmouseout="this.style.background='rgba(255,255,255,0.12)'">&times;</button>
+            " onmouseover="this.style.background='#e5e7eb'"
+               onmouseout="this.style.background='#f3f4f6'">&times;</button>
 
             <!-- Preview image -->
             <img id="profilePreviewImg" src="" alt="Preview" style="
                 max-width:min(500px, 88vw); max-height:72vh;
                 border-radius:20px; object-fit:contain;
-                box-shadow:0 32px 100px rgba(0,0,0,0.55);
-                border:1px solid rgba(255,255,255,0.08);
+                box-shadow:0 32px 100px rgb(0, 0, 0);
+                border:1px solid rgb(255, 255, 255);
                 background:#111;
             ">
 
             <!-- Caption -->
             <div id="profilePreviewCaption" style="
-                color:rgba(255,255,255,0.85); font-weight:600;
+                color:rgb(255, 255, 255); font-weight:600;
                 font-size:0.95rem; letter-spacing:-0.01em;
             "></div>
         </div>
@@ -591,13 +589,13 @@
         function showToast(title, message, linkUrl, actionText) {
             const container = ensureToastContainer();
             const toast = document.createElement('div');
-            toast.style.background = 'rgba(17,24,39,0.96)';
+            toast.style.background = 'rgb(17, 24, 39)';
             toast.style.color = '#fff';
             toast.style.borderRadius = '18px';
             toast.style.padding = '14px 16px';
-            toast.style.boxShadow = '0 18px 45px rgba(0,0,0,0.25)';
-            toast.style.border = '1px solid rgba(255,255,255,0.08)';
-            toast.style.backdropFilter = 'blur(18px)';
+            toast.style.boxShadow = '0 18px 45px rgb(0, 0, 0)';
+            toast.style.border = '1px solid rgb(255, 255, 255)';
+            toast.style.background = 'rgba(0,0,0,0.85)';
             toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
             toast.style.cursor = linkUrl ? 'pointer' : 'default';
 
@@ -605,7 +603,7 @@
             titleEl.style.cssText = 'font-weight:800; margin-bottom:4px;';
             titleEl.textContent = title;
             const bodyEl = document.createElement('div');
-            bodyEl.style.cssText = 'font-size:0.9rem; line-height:1.45; color:rgba(255,255,255,0.82);';
+            bodyEl.style.cssText = 'font-size:0.9rem; line-height:1.45; color:rgb(255, 255, 255);';
             bodyEl.textContent = message;
             toast.appendChild(titleEl);
             toast.appendChild(bodyEl);

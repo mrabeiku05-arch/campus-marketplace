@@ -160,7 +160,7 @@ $cat_desc = ($category && isset($cat_descriptions[$category])) ? $cat_descriptio
     <form action="index.php" method="GET" style="display:flex; gap:0.75rem; width:100%; flex-wrap:wrap; align-items:center;" id="searchForm">
         <div style="flex:1; min-width:180px; position:relative;">
             <input type="text" name="search" id="searchInput" class="form-control" autocomplete="off" placeholder="Search products..." value="<?= htmlspecialchars($search) ?>" style="width:100%;">
-            <div id="searchSuggestions" style="display:none; position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--card-bg); border:1px solid var(--border); border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.15); z-index:9999; max-height:200px; overflow-y:auto; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);"></div>
+            <div id="searchSuggestions" style="display:none; position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--card-bg); border:1px solid var(--border); border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,0.15); z-index:9999; max-height:200px; overflow-y:auto;"></div>
         </div>
         <select name="category" class="form-control" style="max-width:160px;">
             <option value="">All Categories</option>
@@ -189,7 +189,7 @@ $cat_desc = ($category && isset($cat_descriptions[$category])) ? $cat_descriptio
                         <p style="font-size:1.5rem; font-weight:800; letter-spacing:-0.02em;"><?= htmlspecialchars($ad['title']) ?></p>
                     </div>
                 <?php endif; ?>
-                <span style="position:absolute; top:12px; right:12px; background:rgba(0,0,0,0.4); backdrop-filter:blur(10px); color:#fff; font-size:0.6rem; padding:4px 10px; border-radius:8px; letter-spacing:0.08em; font-weight:700; border:1px solid rgba(255,255,255,0.1);">AD</span>
+                <span style="position:absolute; top:12px; right:12px; background:rgba(0,0,0,0.4); color:#fff; font-size:0.6rem; padding:4px 10px; border-radius:8px; letter-spacing:0.08em; font-weight:700; border:1px solid rgba(255,255,255,0.1);">AD</span>
             </div>
         </a>
         <?php endforeach; ?>
@@ -197,7 +197,7 @@ $cat_desc = ($category && isset($cat_descriptions[$category])) ? $cat_descriptio
     
     <!-- Navigation dots for ads if more than 1 -->
     <?php if(count($homepage_ads) > 1): ?>
-    <div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:10; background:rgba(0,0,0,0.25); padding:4px 10px; border-radius:10px; backdrop-filter:blur(8px);">
+    <div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:10; background:rgba(0,0,0,0.5); padding:4px 10px; border-radius:10px;">
         <?php foreach($homepage_ads as $idx => $ad): ?>
             <div class="ad-dot" style="width:6px; height:6px; border-radius:50%; background:<?= $idx === 0 ? '#fff' : 'rgba(255,255,255,0.4)' ?>; transition:all 0.2s;"></div>
         <?php endforeach; ?>
@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         $promo = isset($p['promo_tag']) ? trim($p['promo_tag']) : '';
                     ?>
                     <?php if($promo): ?>
-                    <span class="boosted-badge" style="top:8px; bottom:auto; left:8px; background:rgba(0,0,0,0.75); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); color:#fff; font-size:0.6rem; padding:0.3rem 0.6rem; border-radius:8px; font-weight:600; box-shadow:0 2px 8px rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.15); display:flex; align-items:center; gap:4px; letter-spacing:0.02em;">
+                    <span class="boosted-badge" style="top:8px; bottom:auto; left:8px; background:rgba(0,0,0,0.85); color:#fff; font-size:0.6rem; padding:0.3rem 0.6rem; border-radius:8px; font-weight:600; box-shadow:0 2px 8px rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.15); display:flex; align-items:center; gap:4px; letter-spacing:0.02em;">
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#facc15" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                         <?= htmlspecialchars(str_replace(['ΓÜí ', 'ΓÅ│ ', '≡ƒÄô ', '≡ƒôª ', '≡ƒÅ╖∩╕Å '], '', $promo)) ?>
                     </span>

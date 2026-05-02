@@ -82,26 +82,17 @@ const GlassCard = ({ children, style = {} }: { children: React.ReactNode; style?
         overflow: 'hidden',
         borderRadius: '24px',
         padding: '2rem 1.75rem',
-        border: '1px solid rgba(255,255,255,0.18)',
-        background: 'rgba(255,255,255,0.12)',
-        backdropFilter: 'blur(24px) saturate(200%)',
-        WebkitBackdropFilter: 'blur(24px) saturate(200%)',
+        border: '1px solid rgba(255,255,255,0.1)',
+        background: '#1c1c1e',
         boxShadow: hovered
-          ? '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 1px rgba(255,255,255,0.4), 0 0 0 1px rgba(0,113,227,0.12)'
-          : '0 4px 16px rgba(0,0,0,0.08), inset 0 1px 1px rgba(255,255,255,0.3)',
+          ? '0 8px 32px rgba(0,0,0,0.3)'
+          : '0 4px 16px rgba(0,0,0,0.2)',
         transform: hovered ? 'translateY(-6px) scale(1.01)' : 'translateY(0) scale(1)',
         transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
         cursor: 'default',
         ...style,
       }}
     >
-      {/* Liquid specular highlight */}
-      <div style={{
-        position: 'absolute', top: 0, left: 0, right: 0, height: '1px',
-        background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%)',
-        opacity: hovered ? 1 : 0.6,
-        transition: 'opacity 0.4s',
-      }} />
       <div style={{ position: 'relative', zIndex: 1 }}>
         {children}
       </div>
