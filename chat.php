@@ -13,7 +13,7 @@ $stmt = $pdo->prepare("
         (SELECT message FROM messages WHERE (sender_id = u.id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.id) ORDER BY created_at DESC LIMIT 1) as last_msg,
         (SELECT message_type FROM messages WHERE (sender_id = u.id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.id) ORDER BY created_at DESC LIMIT 1) as last_msg_type,
         (SELECT attachment_url FROM messages WHERE (sender_id = u.id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.id) ORDER BY created_at DESC LIMIT 1) as last_attachment,
-        (SELECT SUM(CASE WHEN is_read=0 AND receiver_id=? THEN 1 ELSE 0 END) FROM messages WHERE (sender_id = u.id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.id)) as unread
+        (SELECT SUM(CASE WHEN is_read={$boolFalse} AND receiver_id=? THEN 1 ELSE 0 END) FROM messages WHERE (sender_id = u.id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.id)) as unread
     FROM users u
     WHERE u.id IN (SELECT DISTINCT CASE WHEN sender_id = ? THEN receiver_id ELSE sender_id END FROM messages WHERE sender_id = ? OR receiver_id = ?)
     AND u.id != ?
