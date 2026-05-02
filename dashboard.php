@@ -452,6 +452,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $pdo->commit();
                 $_SESSION['flash'] = "Withdrawal of GHS " . number_format($amount, 2) . " submitted successfully (Ref: $ref). Processing may take 24-48 hours.";
                 header('Location: dashboard.php?tab=wallet');
+                exit;
+            } catch (Exception $e) {
+                $pdo->rollBack();
+                $msg = $e->getMessage();
+            }
+            break;
+    }
+}
+
 // Stats
 try {
     $productCount = $pdo->prepare("SELECT COUNT(*) FROM products WHERE user_id = ?"); 

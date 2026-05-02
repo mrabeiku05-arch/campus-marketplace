@@ -551,7 +551,6 @@ echo '<link rel="stylesheet" href="' . getAssetUrl('assets/css/dashboard-v2.css'
                                             'paused' => 'pending',
                                             default => 'pending'
                                         };
-                                        <?php
                                         // Filtering is now handled by the DB query
                                         $isLowStock = ($qty > 0 && $qty <= 3 && $pStatus === 'approved');
                                         ?>
