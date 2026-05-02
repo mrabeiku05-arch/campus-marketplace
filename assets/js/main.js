@@ -192,7 +192,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     
                     const msgDiv = document.createElement('div');
-                    msgDiv.className = `msg ${isSent ? 'sent' : 'recv'}`;
+                    msgDiv.className = `msg ${isSent ? 'sent dash-bubble-seller' : 'recv dash-bubble-buyer'}`;
+                    msgDiv.style.textAlign = isSent ? 'right' : 'left';
+                    msgDiv.style.backgroundColor = isSent ? 'purple' : 'gray';
+                    msgDiv.style.color = 'white';
+                    msgDiv.style.padding = '8px 12px';
+                    msgDiv.style.borderRadius = '12px';
+                    msgDiv.style.marginBottom = '8px';
+                    msgDiv.style.alignSelf = isSent ? 'flex-end' : 'flex-start';
+                    msgDiv.style.maxWidth = '70%';
                     msgDiv.setAttribute('data-msg-id', m.id);
                     msgDiv.innerHTML = `
                         ${attachmentHtml}

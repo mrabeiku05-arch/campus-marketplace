@@ -1,3 +1,4 @@
+<?php $baseUrl = $baseUrl ?? ''; ?>
     </div><!-- /container -->
     <footer style="background:var(--card-bg); padding:1.5rem 1rem 0.5rem; color:var(--text-main); border-top:1px solid var(--border); margin-top:2rem; border-radius:24px 24px 0 0; width:100%; box-sizing:border-box;">
         <div class="container footer-grid" style="margin-bottom:1rem;">

@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h2 style=\"color:#7c3aed;margin-bottom:12px\">Reset your password</h2>
                 <p>Hello {$safeName},</p>
                 <p>We received a request to reset your CampusMarketplace password.</p>
-                <p><a href="{$safeUrl}" style="display:inline-block;padding:10px 18px;background:#7c3aed;color:#fff;text-decoration:none;border-radius:999px;font-weight:700">Reset Password</a></p>
+                <p><a href=\"{$safeUrl}\" style=\"display:inline-block;padding:10px 18px;background:#7c3aed;color:#fff;text-decoration:none;border-radius:999px;font-weight:700\">Reset Password</a></p>
                 <p>This link expires in 1 hour. If you did not request this, you can ignore this email.</p>
             </div>";
 

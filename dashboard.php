@@ -4,6 +4,21 @@ if (!isLoggedIn()) redirect('login.php');
 
 $user = getUser($pdo, $_SESSION['user_id']);
 if (!$user) { session_destroy(); redirect('login.php'); }
+
+// --- STORE SELLER VARIABLES ---
+$seller_id = $user['id'];
+$seller_name = $user['username'];
+$seller_avatar = $user['profile_pic'] ?? '';
+$seller_plan = $user['seller_tier'] ?: 'basic';
+$seller_verified = !empty($user['verified']);
+$wallet_balance = (float)($user['balance'] ?? 0);
+
+// --- TAB ROUTING ---
+$tabWhitelist = ['overview','inventory','orders','analytics','wallet','messages','settings'];
+$tab = $_GET['tab'] ?? 'overview';
+if (!in_array($tab, $tabWhitelist, true)) {
+    $tab = 'overview';
+}
 $supportAdminId = getPrimaryAdminId($pdo);
 $isAdminSellerView = ($user['role'] === 'admin' && (($_GET['view'] ?? '') === 'seller' || ($_POST['dashboard_view'] ?? '') === 'seller'));
 $dashboardRole = $isAdminSellerView ? 'seller' : $user['role'];
@@ -23,8 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     switch ($action) {
         case 'request_delete':
             if ($pid > 0) {
-                $pdo->prepare("UPDATE products SET status='deletion_requested' WHERE id=? AND user_id=? AND status NOT IN ('deletion_requested')")->execute([$pid, $user['id']]);
-                $msg = "Deletion request submitted.";
+                $pdo->prepare("UPDATE products SET status='deleted' WHERE id=? AND user_id=? AND status NOT IN ('deleted')")->execute([$pid, $user['id']]);
+                $_SESSION['flash'] = 'Product removed successfully.';
+                header('Location: dashboard.php?tab=inventory');
+                exit;
             }
             break;
         case 'pause':
@@ -291,6 +308,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $msg = "Item Sold confirmed successfully.";
             }
             break;
+        case 'ship_order':
+            $oid = (int)($_POST['oid'] ?? 0);
+            if ($oid > 0) {
+                $o = $pdo->prepare("SELECT * FROM orders WHERE id=? AND seller_id=?");
+                $o->execute([$oid, $user['id']]);
+                $ordData = $o->fetch(PDO::FETCH_ASSOC);
+                if (!$ordData) { $msg = "Order not found."; break; }
+                if (($ordData['status'] ?? '') !== 'seller_seen') { $msg = "Order must be acknowledged before shipping."; break; }
+                $pdo->prepare("UPDATE orders SET status='delivered' WHERE id=? AND seller_id=?")->execute([$oid, $user['id']]);
+                createNotification($pdo, (int)$ordData['buyer_id'], 'order_update', "Your order #$oid has been shipped!", $oid, [
+                    'title' => 'Order shipped',
+                    'link_url' => 'dashboard.php#buyer_orders',
+                ]);
+                $msg = "Order marked as shipped.";
+            }
+            break;
+        case 'complete_order':
+            $oid = (int)($_POST['oid'] ?? 0);
+            if ($oid > 0) {
+                $o = $pdo->prepare("SELECT * FROM orders WHERE id=? AND seller_id=?");
+                $o->execute([$oid, $user['id']]);
+                $ordData = $o->fetch(PDO::FETCH_ASSOC);
+                if (!$ordData) { $msg = "Order not found."; break; }
+                if (!in_array($ordData['status'] ?? '', ['delivered', 'seller_seen'], true)) { $msg = "Order cannot be completed from current state."; break; }
+                $pdo->prepare("UPDATE orders SET status='completed' WHERE id=? AND seller_id=?")->execute([$oid, $user['id']]);
+                dashboardCreateSaleTransaction($pdo, $ordData, $oid);
+                createNotification($pdo, (int)$ordData['buyer_id'], 'order_update', "Your order #$oid is completed!", $oid, [
+                    'title' => 'Order completed',
+                    'link_url' => 'dashboard.php#buyer_orders',
+                ]);
+                $msg = "Order marked as completed.";
+            }
+            break;
         case 'receive_order':
             $oid = (int)($_POST['oid'] ?? $_GET['oid'] ?? 0);
             if ($oid > 0) {
@@ -377,12 +427,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 }
             }
             break;
-    }
-}
-
-// Re-fetch user after potential changes
-$user = getUser($pdo, $user['id']);
-
+        case 'request_withdrawal':
+            $amount = (float)($_POST['withdraw_amount'] ?? 0);
+            $network = trim($_POST['momo_network'] ?? '');
+            $number = trim($_POST['momo_number'] ?? '');
+            if ($amount <= 0) { $msg = "Please enter a valid amount."; break; }
+            if (!$network || !$number) { $msg = "Please select a network and enter your mobile number."; break; }
+            if (!preg_match('/^[0-9]{10}$/', $number)) { $msg = "Please enter a valid 10-digit phone number."; break; }
+            if (!\in_array($network, ['MTN', 'Vodafone', 'AirtelTigo'], true)) { $msg = "Invalid network selected."; break; }
+            // Balance validation + atomic withdrawal
+            $pdo->beginTransaction();
+            try {
+                $bal = $pdo->prepare("SELECT balance FROM users WHERE id = ? FOR UPDATE");
+                $bal->execute([$user['id']]);
+                $currentBalance = (float)$bal->fetchColumn();
+                if ($amount > $currentBalance) {
+                    throw new Exception("Insufficient funds. Your balance is GHS " . number_format($currentBalance, 2));
+                }
+                $pdo->prepare("UPDATE users SET balance = balance - ? WHERE id = ?")->execute([$amount, $user['id']]);
+                $ref = 'WD-' . strtoupper(bin2hex(random_bytes(6)));
+                $desc = "Withdrawal to $network $number";
+                $pdo->prepare("INSERT INTO transactions (user_id, type, amount, status, reference, description) VALUES (?, 'withdrawal', ?, 'pending', ?, ?)")
+                    ->execute([$user['id'], $amount, $ref, $desc]);
+                $pdo->commit();
+                $_SESSION['flash'] = "Withdrawal of GHS " . number_format($amount, 2) . " submitted successfully (Ref: $ref). Processing may take 24-48 hours.";
+                header('Location: dashboard.php?tab=wallet');
 // Stats
 try {
     $productCount = $pdo->prepare("SELECT COUNT(*) FROM products WHERE user_id = ?"); 
@@ -392,6 +461,7 @@ try {
     $approvedCount = $pdo->prepare("SELECT COUNT(*) FROM products WHERE user_id = ? AND status='approved'"); 
     $approvedCount->execute([$user['id']]); 
     $totalApproved = $approvedCount->fetchColumn();
+    $active_listings = (int)$totalApproved;
 
     $pendingCountStmt = $pdo->prepare("SELECT COUNT(*) FROM products WHERE user_id = ? AND status='pending'");
     $pendingCountStmt->execute([$user['id']]);
@@ -404,13 +474,35 @@ try {
     $totalViews = $pdo->prepare("SELECT COALESCE(SUM(views),0) FROM products WHERE user_id = ?"); 
     $totalViews->execute([$user['id']]); 
     $viewsTotal = $totalViews->fetchColumn();
+    $total_views = (int)$viewsTotal;
 
-    // Show ALL seller products
-    $stmt = $pdo->prepare("SELECT p.*, 
+    // Show seller products (with optional filter + search)
+    $invFilter = $_GET['filter'] ?? 'all';
+    $invSearch = trim($_GET['search'] ?? '');
+    $productSql = "SELECT p.*, 
         (SELECT image_path FROM product_images WHERE product_id = p.id ORDER BY sort_order LIMIT 1) as main_image,
         (SELECT COUNT(*) FROM discount_requests WHERE product_id = p.id AND status = 'pending') as has_pending_discount
-        FROM products p WHERE p.user_id = ? ORDER BY p.created_at DESC");
-    $stmt->execute([$user['id']]);
+        FROM products p WHERE p.user_id = ? AND p.status != 'deleted'";
+    $productParams = [$user['id']];
+
+    if ($invFilter === 'approved') {
+        $productSql .= " AND p.status = 'approved'";
+    } elseif ($invFilter === 'pending') {
+        $productSql .= " AND p.status = 'pending'";
+    } elseif ($invFilter === 'paused') {
+        $productSql .= " AND p.status = 'paused'";
+    } elseif ($invFilter === 'low') {
+        $productSql .= " AND p.quantity > 0 AND p.quantity <= 5 AND p.status = 'approved'";
+    }
+
+    if ($invSearch !== '') {
+        $productSql .= " AND p.title LIKE ?";
+        $productParams[] = '%' . $invSearch . '%';
+    }
+
+    $productSql .= " ORDER BY p.created_at DESC";
+    $stmt = $pdo->prepare($productSql);
+    $stmt->execute($productParams);
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 } catch (PDOException $e) {
     error_log('dashboard.php DB error: ' . $e->getMessage());
@@ -424,9 +516,28 @@ try {
 }
 
 // Transactions
-$stmt = $pdo->prepare("SELECT * FROM transactions WHERE user_id = ? ORDER BY created_at DESC LIMIT 15");
+$stmt = $pdo->prepare("SELECT * FROM transactions WHERE user_id = ? ORDER BY created_at DESC LIMIT 20");
 $stmt->execute([$user['id']]);
 $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+
+// --- RECENT ACTIVITY (UNIFIED UNION ALL) ---
+$sqlActivity = "
+    SELECT 'transaction' AS type, CONCAT('Transaction: ', type) AS title, description AS subtitle, created_at
+    FROM transactions WHERE user_id = ?
+    UNION ALL
+    SELECT 'order' AS type, CONCAT('Order #', id) AS title, CONCAT('Status: ', status) AS subtitle, created_at
+    FROM orders WHERE seller_id = ?
+    UNION ALL
+    SELECT 'message' AS type, 'New Message' AS title, message AS subtitle, created_at
+    FROM messages WHERE receiver_id = ?
+    UNION ALL
+    SELECT 'product' AS type, 'Low Stock Alert' AS title, title AS subtitle, COALESCE(updated_at, created_at) AS created_at
+    FROM products WHERE user_id = ? AND quantity > 0 AND quantity <= 5 AND status = 'approved'
+    ORDER BY created_at DESC LIMIT 5
+";
+$stmtAct = $pdo->prepare($sqlActivity);
+$stmtAct->execute([$user['id'], $user['id'], $user['id'], $user['id']]);
+$activityFeed = $stmtAct->fetchAll(PDO::FETCH_ASSOC) ?: [];
 
 // Announcements
 $announcement_active = sqlBool(true, $pdo);
@@ -465,46 +576,112 @@ if ($hasSellerDashboardAccess) {
     try {
         // Total items sold
         $s = $pdo->prepare("SELECT COUNT(*) FROM orders o JOIN products p ON o.product_id=p.id WHERE p.user_id=? AND o.status='completed'"); $s->execute([$user['id']]); $sellerTotalSold = (int)$s->fetchColumn();
+        $items_sold = $sellerTotalSold;
     } catch(PDOException $e) {}
     try {
         // Total revenue
         $s = $pdo->prepare("SELECT COALESCE(SUM(amount),0) FROM transactions WHERE user_id=? AND type='sale' AND status='completed'"); $s->execute([$user['id']]); $sellerRevenue = (float)$s->fetchColumn();
+        $total_revenue = $sellerRevenue;
     } catch(PDOException $e) {}
     // Low stock products
     $sellerLowStock = 0;
     foreach ($products as $p) { if ($p['quantity'] > 0 && $p['quantity'] <= 5 && $p['status'] === 'approved') $sellerLowStock++; }
+    $low_stock_count = $sellerLowStock;
+    
+    // Add pending orders and unread messages count
+    try {
+        $po = $pdo->prepare("SELECT COUNT(*) FROM orders WHERE seller_id=? AND status NOT IN ('completed', 'delivered', 'cancelled', 'refunded')");
+        $po->execute([$user['id']]);
+        $pending_orders = (int)$po->fetchColumn();
+    } catch(PDOException $e) { $pending_orders = 0; }
+    
+    $unread_messages = function_exists('getUnreadCount') ? getUnreadCount($pdo, $user['id']) : 0;
     try {
         // Top performing product
         $s = $pdo->prepare("SELECT title, views, quantity FROM products WHERE user_id=? AND status='approved' ORDER BY views DESC LIMIT 1"); $s->execute([$user['id']]); $sellerTopProduct = $s->fetch(PDO::FETCH_ASSOC) ?: null;
     } catch(PDOException $e) {}
-    // Weekly sales data (last 7 days from transactions)
-    for ($i = 6; $i >= 0; $i--) {
-        $date = date('Y-m-d', strtotime("-$i days"));
-        $dayLabel = date('M d', strtotime($date));
-        $date_cast = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql' ? "::DATE" : "";
-        $date_func = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql' ? "" : "DATE";
-        
-        try {
-            $sql = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql' 
-                ? "SELECT COALESCE(SUM(amount),0) FROM transactions WHERE user_id=? AND type='sale' AND created_at::DATE=?"
-                : "SELECT COALESCE(SUM(amount),0) FROM transactions WHERE user_id=? AND type='sale' AND CAST(created_at AS DATE)=?";
-            $s = $pdo->prepare($sql); $s->execute([$user['id'], $date]); $amt = (float)$s->fetchColumn();
-        } catch(PDOException $e) { $amt = 0; }
-        try {
-            $sql = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql' 
-                ? "SELECT COALESCE(SUM(views),0) FROM products WHERE user_id=? AND updated_at::DATE=?"
-                : "SELECT COALESCE(SUM(views),0) FROM products WHERE user_id=? AND CAST(updated_at AS DATE)=?";
-            $s2 = $pdo->prepare($sql); $s2->execute([$user['id'], $date]); $vw = (int)$s2->fetchColumn();
-        } catch(PDOException $e) { $vw = 0; }
-        $sellerWeeklySales[] = ['label' => $dayLabel, 'sales' => $amt, 'views' => $vw];
+    // PERCENTAGE CHANGES (7-day vs previous 7-day)
+    $changeHelper = function($curr, $prev) { return $prev > 0 ? round(($curr - $prev) / $prev * 100, 1) : 0; };
+    $p7d = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql' ? "NOW() - INTERVAL '7 days'" : "DATE_SUB(NOW(), INTERVAL 7 DAY)";
+    $p14d = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql' ? "NOW() - INTERVAL '14 days'" : "DATE_SUB(NOW(), INTERVAL 14 DAY)";
+
+    // Revenue Change
+    $sqlC = "SELECT COALESCE(SUM(amount),0) FROM transactions WHERE user_id=? AND type='sale' AND status='completed' AND created_at >= $p7d";
+    $sqlP = "SELECT COALESCE(SUM(amount),0) FROM transactions WHERE user_id=? AND type='sale' AND status='completed' AND created_at >= $p14d AND created_at < $p7d";
+    $sC = $pdo->prepare($sqlC); $sC->execute([$user['id']]); $currRev = (float)$sC->fetchColumn();
+    $sP = $pdo->prepare($sqlP); $sP->execute([$user['id']]); $prevRev = (float)$sP->fetchColumn();
+    $revenue_change = $changeHelper($currRev, $prevRev);
+
+    // Items Sold Change
+    $sqlC = "SELECT COUNT(*) FROM orders o JOIN products p ON o.product_id=p.id WHERE p.user_id=? AND o.status='completed' AND o.created_at >= $p7d";
+    $sqlP = "SELECT COUNT(*) FROM orders o JOIN products p ON o.product_id=p.id WHERE p.user_id=? AND o.status='completed' AND o.created_at >= $p14d AND o.created_at < $p7d";
+    $sC = $pdo->prepare($sqlC); $sC->execute([$user['id']]); $currSold = (float)$sC->fetchColumn();
+    $sP = $pdo->prepare($sqlP); $sP->execute([$user['id']]); $prevSold = (float)$sP->fetchColumn();
+    $sold_change = $changeHelper($currSold, $prevSold);
+
+    // Views Change
+    $sqlC = "SELECT COALESCE(SUM(views),0) FROM products WHERE user_id=? AND updated_at >= $p7d";
+    $sqlP = "SELECT COALESCE(SUM(views),0) FROM products WHERE user_id=? AND updated_at >= $p14d AND updated_at < $p7d";
+    $sC = $pdo->prepare($sqlC); $sC->execute([$user['id']]); $currView = (float)$sC->fetchColumn();
+    $sP = $pdo->prepare($sqlP); $sP->execute([$user['id']]); $prevView = (float)$sP->fetchColumn();
+    $views_change = $changeHelper($currView, $prevView);
+
+    // Listings Change
+    $sqlC = "SELECT COUNT(*) FROM products WHERE user_id=? AND status='approved' AND created_at >= $p7d";
+    $sqlP = "SELECT COUNT(*) FROM products WHERE user_id=? AND status='approved' AND created_at >= $p14d AND created_at < $p7d";
+    $sC = $pdo->prepare($sqlC); $sC->execute([$user['id']]); $currList = (float)$sC->fetchColumn();
+    $sP = $pdo->prepare($sqlP); $sP->execute([$user['id']]); $prevList = (float)$sP->fetchColumn();
+    $listings_change = $changeHelper($currList, $prevList);
+
+    // CHART DATA GROUPING
+    $chart_range = max(7, (int)($_GET['range'] ?? 7));
+    $chart_labels_map = [];
+    $chart_revenue_map = [];
+    $chart_views_map = [];
+    
+    for ($i = $chart_range - 1; $i >= 0; $i--) {
+        $dateKey = date('Y-m-d', strtotime("-$i days"));
+        $chart_labels_map[$dateKey] = date('M d', strtotime("-$i days"));
+        $chart_revenue_map[$dateKey] = 0;
+        $chart_views_map[$dateKey] = 0;
     }
+
+    $rangeInterval = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql' ? "INTERVAL '$chart_range days'" : "INTERVAL $chart_range DAY";
+    
+    try {
+        $sqlR = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql' 
+            ? "SELECT created_at::DATE as d, SUM(amount) as amt FROM transactions WHERE user_id=? AND type='sale' AND status='completed' AND created_at >= NOW() - $rangeInterval GROUP BY created_at::DATE"
+            : "SELECT DATE(created_at) as d, SUM(amount) as amt FROM transactions WHERE user_id=? AND type='sale' AND status='completed' AND created_at >= DATE_SUB(NOW(), INTERVAL $chart_range DAY) GROUP BY DATE(created_at)";
+        $sR = $pdo->prepare($sqlR); $sR->execute([$user['id']]);
+        while ($row = $sR->fetch(PDO::FETCH_ASSOC)) {
+            if (isset($chart_revenue_map[$row['d']])) $chart_revenue_map[$row['d']] = (float)$row['amt'];
+        }
+    } catch(PDOException $e) {}
+
+    try {
+        $sqlV = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql' 
+            ? "SELECT updated_at::DATE as d, SUM(views) as vw FROM products WHERE user_id=? AND updated_at >= NOW() - $rangeInterval GROUP BY updated_at::DATE"
+            : "SELECT DATE(updated_at) as d, SUM(views) as vw FROM products WHERE user_id=? AND updated_at >= DATE_SUB(NOW(), INTERVAL $chart_range DAY) GROUP BY DATE(updated_at)";
+        $sV = $pdo->prepare($sqlV); $sV->execute([$user['id']]);
+        while ($row = $sV->fetch(PDO::FETCH_ASSOC)) {
+            if (isset($chart_views_map[$row['d']])) $chart_views_map[$row['d']] = (int)$row['vw'];
+        }
+    } catch(PDOException $e) {}
+
+    $chart_labels = array_values($chart_labels_map);
+    $chart_revenue = array_values($chart_revenue_map);
+    $chart_views = array_values($chart_views_map);
 }
 
-// Chart data for sellers
-$chart_data = $sellerWeeklySales ?: [];
-if (empty($chart_data)) {
-    for ($i = 6; $i >= 0; $i--) {
-        $chart_data[] = ['label' => date('M d', strtotime("-$i days")), 'sales' => 0, 'views' => 0];
+if (!isset($chart_labels) || empty($chart_labels)) {
+    $chart_labels = [];
+    $chart_revenue = [];
+    $chart_views = [];
+    $chart_range = max(7, (int)($_GET['range'] ?? 7));
+    for ($i = $chart_range - 1; $i >= 0; $i--) {
+        $chart_labels[] = date('M d', strtotime("-$i days"));
+        $chart_revenue[] = 0;
+        $chart_views[] = 0;
     }
 }
 
@@ -675,8 +852,22 @@ try {
     $s->execute([$user['id']]); $buyer_orders = $s->fetchAll(PDO::FETCH_ASSOC);
 
     if ($hasSellerDashboardAccess) {
-        $s = $pdo->prepare("SELECT o.*, p.title as product_title, p.price as product_price, b.username as buyer_name FROM orders o JOIN products p ON o.product_id=p.id JOIN users b ON o.buyer_id=b.id WHERE o.seller_id=? ORDER BY o.created_at DESC");
-        $s->execute([$user['id']]); $seller_orders = $s->fetchAll(PDO::FETCH_ASSOC);
+        $order_filter = $_GET['order_filter'] ?? 'all';
+        $order_page = max(1, (int)($_GET['page'] ?? 1));
+        $order_offset = ($order_page - 1) * 10;
+        $orderSql = "SELECT o.*, p.title as product_title, p.price as product_price, b.username as buyer_name FROM orders o JOIN products p ON o.product_id=p.id JOIN users b ON o.buyer_id=b.id WHERE o.seller_id=?";
+        $orderParams = [$user['id']];
+        if ($order_filter !== 'all') {
+            $orderSql .= " AND o.status=?";
+            $orderParams[] = $order_filter;
+        }
+        // Count total for pagination
+        $countSql = str_replace("SELECT o.*, p.title as product_title, p.price as product_price, b.username as buyer_name", "SELECT COUNT(*)", $orderSql);
+        $cs = $pdo->prepare($countSql); $cs->execute($orderParams); $total_orders = (int)$cs->fetchColumn();
+        $order_total_pages = max(1, (int)ceil($total_orders / 10));
+        $orderSql .= " ORDER BY o.created_at DESC LIMIT 10 OFFSET $order_offset";
+        $s = $pdo->prepare($orderSql);
+        $s->execute($orderParams); $seller_orders = $s->fetchAll(PDO::FETCH_ASSOC);
     }
 } catch(PDOException $e) {}
 
@@ -1000,7 +1191,9 @@ require_once 'includes/header.php';
 }
 </style>
 <?php
-
+if ($hasSellerDashboardAccess):
+    require __DIR__ . '/includes/seller_dashboard_workspace.php';
+else:
 if($msg): ?><div class="alert alert-success fade-in"><?= htmlspecialchars($msg) ?></div><?php endif; ?>
 
 <!-- Global Announcements -->
@@ -1617,11 +1810,11 @@ if($msg): ?><div class="alert alert-success fade-in"><?= htmlspecialchars($msg) 
                 new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: <?= json_encode(array_column($chart_data, 'label')) ?>,
+                        labels: <?= json_encode($chart_labels ?? []) ?>,
                         datasets: [
                             {
                                 label: 'Revenue (GHS)',
-                                data: <?= json_encode(array_column($chart_data, 'sales')) ?>,
+                                data: <?= json_encode($chart_revenue ?? []) ?>,
                                 backgroundColor: 'rgba(124,58,237,0.4)',
                                 borderColor: '#7c3aed',
                                 borderWidth: 2,
@@ -1630,7 +1823,7 @@ if($msg): ?><div class="alert alert-success fade-in"><?= htmlspecialchars($msg) 
                             },
                             {
                                 label: 'Views',
-                                data: <?= json_encode(array_column($chart_data, 'views')) ?>,
+                                data: <?= json_encode($chart_views ?? []) ?>,
                                 type: 'line',
                                 borderColor: '#34c759',
                                 backgroundColor: 'rgba(52,199,89,0.1)',
@@ -2084,127 +2277,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <?php endif; ?>
-
-<!-- ADDED: Toast notification -->
-<div class="toast-notify" id="dashToast"></div>
-
-<!-- ADDED: Product row selection & discount submission JS -->
-<script>
-let selectedPid = null;
-
-function selectProductRow(pid) {
-    // Deselect previous
-    document.querySelectorAll('.product-row').forEach(r => r.classList.remove('selected'));
-    document.querySelectorAll('[id^="submit-area-"]').forEach(a => a.style.display = 'none');
-
-    if (selectedPid === pid) { selectedPid = null; return; }
-    selectedPid = pid;
-
-    const row = document.getElementById('prow-' + pid);
-    const area = document.getElementById('submit-area-' + pid);
-    if (row) row.classList.add('selected');
-    if (area) area.style.display = 'block';
-}
-
-function submitDiscount(pid) {
-    const input = document.getElementById('disc-' + pid);
-    const val = parseInt(input?.value) || 0;
-    if (val < 1 || val > 90) {
-        showDashToast('Enter a valid discount between 1% and 90%');
-        input?.focus();
-        return;
-    }
-    window.location.href = '?action=submit_discount&pid=' + pid + '&disc=' + val;
-}
-
-function showDashToast(msg) {
-    const t = document.getElementById('dashToast');
-    if (!t) return;
-    t.textContent = msg;
-    t.classList.add('visible');
-    setTimeout(() => t.classList.remove('visible'), 2800);
-}
-</script>
-
-<script src="https://js.paystack.co/v1/inline.js"></script>
-<script>
-const tierPricingConfig = <?= json_encode($tierPricingConfig, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?>;
-const paystackCsrfToken = <?= json_encode($_SESSION['csrf_token'] ?? '') ?>;
-const paystackPublicKey = <?= json_encode((string) get_env_var('PAYSTACK_PUBLIC_KEY', '')) ?>;
-const paystackCustomerEmail = <?= json_encode((string)($user['email'] ?? '')) ?>;
-const paystackUserId = <?= json_encode((string)($user['id'] ?? '')) ?>;
-let activeUpgradeTier = null;
-
-function payWithPaystack(tier) {
-    const tierConfig = tierPricingConfig[tier];
-    if (!tierConfig) {
-        alert('Tier configuration could not be found. Please refresh and try again.');
-        return;
-    }
-
-    const amount = Number(tierConfig.price || 0);
-    if (!Number.isFinite(amount) || amount <= 0) {
-        alert('This plan does not require payment.');
-        return;
-    }
-    if (!paystackPublicKey) {
-        alert('Paystack is not configured yet. Please contact support.');
-        return;
-    }
-    if (!paystackCustomerEmail) {
-        alert('Your account email is missing. Please update your profile before upgrading.');
-        return;
-    }
-    if (typeof window.PaystackPop === 'undefined') {
-        alert('The Paystack checkout script did not load. Please refresh and try again.');
-        return;
-    }
-
-    activeUpgradeTier = tier;
-    const handler = window.PaystackPop.setup({
-        key: paystackPublicKey,
-        email: paystackCustomerEmail,
-        amount: Math.round(amount * 100),
-        currency: 'GHS',
-        label: tierConfig.duration_label ? `${tier.toUpperCase()} - ${tierConfig.duration_label}` : tier.toUpperCase(),
-        metadata: {
-            tier: tier,
-            user_id: paystackUserId,
-            dashboard_flow: 'legacy-upgrade'
-        },
-        callback: function(response) {
-            verifyPayment(response.reference, tier);
-        },
-        onClose: function() {
-            activeUpgradeTier = null;
-            alert('Transaction was not completed.');
-        }
-    });
-    handler.openIframe();
-}
-
-async function verifyPayment(reference, tier) {
-    try {
-        const res = await fetch('api/paystack_verify.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'same-origin',
-            body: JSON.stringify({ reference: reference, tier: tier, csrf_token: paystackCsrfToken })
-        });
-        const data = await res.json();
-        if(data.status === 'success') {
-            activeUpgradeTier = null;
-            alert(data.message);
-            window.location.reload();
-        } else {
-            activeUpgradeTier = null;
-            alert('Error: ' + data.message);
-        }
-    } catch(e) {
-        activeUpgradeTier = null;
-        alert('CRITICAL PAYMENT ERROR: Could not verify transaction.');
-    }
-}
-</script>
+<?php endif; ?>
 
 <?php require_once 'includes/footer.php'; ?>

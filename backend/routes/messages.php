@@ -26,14 +26,14 @@ if ($method === 'GET' && $action === 'conversations') {
             (SELECT message FROM messages WHERE (sender_id = u.id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.id) ORDER BY created_at DESC LIMIT 1) as last_msg,
             (SELECT message_type FROM messages WHERE (sender_id = u.id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.id) ORDER BY created_at DESC LIMIT 1) as last_msg_type,
             (SELECT attachment_url FROM messages WHERE (sender_id = u.id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.id) ORDER BY created_at DESC LIMIT 1) as last_attachment,
-            (SELECT COUNT(*) FROM messages WHERE sender_id = u.id AND receiver_id = ? AND is_read = $boolFalse) as unread,
+            (SELECT SUM(CASE WHEN is_read=0 AND receiver_id=? THEN 1 ELSE 0 END) FROM messages WHERE (sender_id = u.id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.id)) as unread,
             (SELECT MAX(created_at) FROM messages WHERE (sender_id = u.id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.id)) as last_msg_time
         FROM users u
         WHERE u.id IN (SELECT DISTINCT $caseSql FROM messages WHERE sender_id = ? OR receiver_id = ?)
         AND u.id != ?
         ORDER BY last_msg_time DESC
     ");
-    $stmt->execute(array_fill(0, 13, $me));
+    $stmt->execute(array_fill(0, 15, $me));
     $conversations = $stmt->fetchAll();
 
     foreach ($conversations as &$c) {

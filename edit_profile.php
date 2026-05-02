@@ -50,10 +50,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Profile pic
     if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
-        $url = uploadToCloudinary($_FILES['profile_pic'], 'marketplace/avatars');
-        if ($url) {
-            $insert_stmt->execute([$user['id'], 'profile_pic', $user['profile_pic'] ?? '', $url]);
-            $changes_submitted++;
+        $file = $_FILES['profile_pic'];
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $file['tmp_name']);
+        finfo_close($finfo);
+        $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
+        
+        if ($file['size'] <= 2 * 1024 * 1024 && in_array($mime, $allowedMimes, true)) {
+            $url = uploadToCloudinary($file, 'marketplace/avatars');
+            if ($url) {
+                $insert_stmt->execute([$user['id'], 'profile_pic', $user['profile_pic'] ?? '', $url]);
+                $changes_submitted++;
+                // Note: Actual DB update is pending admin approval, but requested to refresh $_SESSION
+                $_SESSION['profile_pic'] = $url;
+            }
+        } else {
+            $error = 'Profile pic must be JPG, PNG, or WEBP under 2MB.';
         }
     }
 

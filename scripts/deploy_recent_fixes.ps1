@@ -2,17 +2,11 @@ $ErrorActionPreference = 'Stop'
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $files = @(
-    'assets/css/style.css',
+    'assets/js/main.js',
+    'backend/routes/messages.php',
+    'chat.php',
     'dashboard.php',
-    'login.php',
-    'register.php',
-    'terms.php',
-    'whatsapp_join.php',
-    'generate_flyer.php',
-    'image_proxy.php',
-    'includes/header.php',
-    'about.php',
-    'admin/index.php'
+    'edit_profile.php'
 )
 
 $ftpBase = 'ftp://ftp-campusmarketplace.alwaysdata.net/www'

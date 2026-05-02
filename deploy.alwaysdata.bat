@@ -37,6 +37,10 @@ if "%~1"=="recent-fixes" (
     powershell -ExecutionPolicy Bypass -File "%~dp0scripts\deploy_recent_fixes.ps1"
     exit /b %errorlevel%
 )
+if "%~1"=="seller-workspace" (
+    powershell -ExecutionPolicy Bypass -File "%~dp0scripts\deploy_recent_fixes.ps1"
+    exit /b %errorlevel%
+)
 if "%~1"=="mobile-fix" (
     powershell -ExecutionPolicy Bypass -File "%~dp0scripts\deploy_mobile_fix.ps1"
     exit /b %errorlevel%

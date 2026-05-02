@@ -13,7 +13,7 @@ $stmt = $pdo->prepare("
         (SELECT message FROM messages WHERE (sender_id = u.id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.id) ORDER BY created_at DESC LIMIT 1) as last_msg,
         (SELECT message_type FROM messages WHERE (sender_id = u.id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.id) ORDER BY created_at DESC LIMIT 1) as last_msg_type,
         (SELECT attachment_url FROM messages WHERE (sender_id = u.id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.id) ORDER BY created_at DESC LIMIT 1) as last_attachment,
-        (SELECT COUNT(*) FROM messages WHERE sender_id = u.id AND receiver_id = ? AND is_read = $boolFalse) as unread
+        (SELECT SUM(CASE WHEN is_read=0 AND receiver_id=? THEN 1 ELSE 0 END) FROM messages WHERE (sender_id = u.id AND receiver_id = ?) OR (sender_id = ? AND receiver_id = u.id)) as unread
     FROM users u
     WHERE u.id IN (SELECT DISTINCT CASE WHEN sender_id = ? THEN receiver_id ELSE sender_id END FROM messages WHERE sender_id = ? OR receiver_id = ?)
     AND u.id != ?
@@ -23,7 +23,7 @@ $stmt->execute([
     $me, $me, // last_msg
     $me, $me, // last_msg_type
     $me, $me, // last_attachment
-    $me,      // unread
+    $me, $me, $me, // unread (SUM(CASE...), receiver_id, sender_id)
     $me, $me, $me, // WHERE IN
     $me,      // !=
     $me, $me  // ORDER BY
@@ -59,11 +59,17 @@ if (isset($_GET['action']) && $_GET['action'] === 'send_fast' && $_SERVER['REQUE
     check_csrf();
     $receiver = (int)$_POST['receiver_id'];
     $msg = trim($_POST['message'] ?? '');
+    
+    // Max 1000 character validation
+    if (strlen($msg) > 1000) {
+        $msg = substr($msg, 0, 1000);
+    }
+
     if ($receiver > 0 && $msg) {
         $stmt = $pdo->prepare("INSERT INTO messages (sender_id, receiver_id, message) VALUES (?, ?, ?)");
         $stmt->execute([$me, $receiver, $msg]);
         createMessageNotification($pdo, $receiver, $me, $msg);
-        redirect('dashboard.php?msg=' . urlencode('Message sent to Administrator!'));
+        redirect('dashboard.php?tab=messages&with=' . $receiver);
     }
 }
 
