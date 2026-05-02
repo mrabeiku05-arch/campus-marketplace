@@ -540,7 +540,7 @@ $sqlActivity = "
     SELECT 'message' AS type, 'New Message' AS title, message AS subtitle, created_at
     FROM messages WHERE receiver_id = ?
     UNION ALL
-    SELECT 'product' AS type, 'Low Stock Alert' AS title, title AS subtitle, COALESCE(updated_at, created_at) AS created_at
+    SELECT 'product' AS type, 'Low Stock Alert' AS title, title AS subtitle, created_at
     FROM products WHERE user_id = ? AND quantity > 0 AND quantity <= 5 AND status = 'approved'
     ORDER BY created_at DESC LIMIT 5
 ";
@@ -629,8 +629,8 @@ if ($hasSellerDashboardAccess) {
     $sold_change = $changeHelper($currSold, $prevSold);
 
     // Views Change
-    $sqlC = "SELECT COALESCE(SUM(views),0) FROM products WHERE user_id=? AND updated_at >= $p7d";
-    $sqlP = "SELECT COALESCE(SUM(views),0) FROM products WHERE user_id=? AND updated_at >= $p14d AND updated_at < $p7d";
+    $sqlC = "SELECT COALESCE(SUM(views),0) FROM products WHERE user_id=? AND created_at >= $p7d";
+    $sqlP = "SELECT COALESCE(SUM(views),0) FROM products WHERE user_id=? AND created_at >= $p14d AND created_at < $p7d";
     $sC = $pdo->prepare($sqlC); $sC->execute([$user['id']]); $currView = (float)$sC->fetchColumn();
     $sP = $pdo->prepare($sqlP); $sP->execute([$user['id']]); $prevView = (float)$sP->fetchColumn();
     $views_change = $changeHelper($currView, $prevView);
@@ -669,8 +669,8 @@ if ($hasSellerDashboardAccess) {
 
     try {
         $sqlV = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql' 
-            ? "SELECT updated_at::DATE as d, SUM(views) as vw FROM products WHERE user_id=? AND updated_at >= NOW() - $rangeInterval GROUP BY updated_at::DATE"
-            : "SELECT DATE(updated_at) as d, SUM(views) as vw FROM products WHERE user_id=? AND updated_at >= DATE_SUB(NOW(), INTERVAL $chart_range DAY) GROUP BY DATE(updated_at)";
+            ? "SELECT created_at::DATE as d, SUM(views) as vw FROM products WHERE user_id=? AND created_at >= NOW() - $rangeInterval GROUP BY created_at::DATE"
+            : "SELECT DATE(created_at) as d, SUM(views) as vw FROM products WHERE user_id=? AND created_at >= DATE_SUB(NOW(), INTERVAL $chart_range DAY) GROUP BY DATE(created_at)";
         $sV = $pdo->prepare($sqlV); $sV->execute([$user['id']]);
         while ($row = $sV->fetch(PDO::FETCH_ASSOC)) {
             if (isset($chart_views_map[$row['d']])) $chart_views_map[$row['d']] = (int)$row['vw'];
