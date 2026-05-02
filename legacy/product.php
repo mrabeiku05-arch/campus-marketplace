@@ -170,7 +170,7 @@ require_once 'includes/header.php';
             @media(min-width:768px) { .product-detail-grid { grid-template-columns:1fr 1fr !important; } }
             .btn-add-cart { background:linear-gradient(135deg,#10b981,#059669); color:#fff; border:none; padding:0.9rem 1.5rem; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; width:100%; text-align:center; transition:all 0.3s; box-shadow:0 4px 15px rgba(16,185,129,0.3); }
             .btn-add-cart:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(16,185,129,0.4); }
-            .btn-wishlist { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:0.9rem 1.5rem; border-radius:12px; font-size:1rem; font-weight:600; cursor:pointer; width:100%; text-align:center; transition:all 0.3s; backdrop-filter:blur(10px); }
+            .btn-wishlist { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:0.9rem 1.5rem; border-radius:12px; font-size:1rem; font-weight:600; cursor:pointer; width:100%; text-align:center; transition:all 0.3s; }
             .btn-wishlist:hover { background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.3); }
             .btn-wishlist.wishlist-active { background:rgba(239,68,68,0.15); border-color:rgba(239,68,68,0.3); }
         </style>

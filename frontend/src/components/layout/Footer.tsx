@@ -34,7 +34,7 @@ function TermsModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   if (!open) return null;
 
   return (
-    <div className="modal-overlay open" style={{display:'flex', position:'fixed', top:0, left:0, width:'100%', height:'100%', background:'rgba(0,0,0,0.6)', backdropFilter:'blur(8px)', zIndex:1000000, alignItems:'center', justifyContent:'center', padding:'20px'}}>
+    <div className="modal-overlay open" style={{display:'flex', position:'fixed', top:0, left:0, width:'100%', height:'100%', background:'rgba(0,0,0,0.85)', zIndex:1000000, alignItems:'center', justifyContent:'center', padding:'20px'}}>
       <div className="glass" style={{width:'100%', maxWidth:'850px', height:'85vh', borderRadius:'32px', display:'flex', flexDirection:'column', overflow:'hidden', position:'relative', boxShadow:'0 30px 100px rgba(0,0,0,0.3)', animation:'modalSlideUp 0.4s cubic-bezier(0.19, 1, 0.22, 1)'}}>
         <div style={{padding:'1.5rem 2rem', borderBottom:'1px solid var(--border)', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
           <h3 style={{margin:0, fontSize:'1.2rem', fontWeight:800}}>Terms & Conditions</h3>
@@ -283,7 +283,7 @@ function AIAssistant() {
       </button>
 
       {open && (
-        <div style={{position:'absolute', bottom:'72px', right:0, width:'360px', maxWidth:'90vw', height:'460px', borderRadius:'20px', display:'flex', flexDirection:'column', overflow:'hidden', boxShadow:'0 20px 48px rgba(0,0,0,0.2)', border:'1px solid var(--border)', background:'var(--card-bg)', backdropFilter:'blur(24px)'}}>
+        <div style={{position:'absolute', bottom:'72px', right:0, width:'360px', maxWidth:'90vw', height:'460px', borderRadius:'20px', display:'flex', flexDirection:'column', overflow:'hidden', boxShadow:'0 20px 48px rgba(0,0,0,0.2)', border:'1px solid var(--border)', background:'var(--card-bg)'}}>
           <div style={{background:'#0071e3', padding:'0.85rem 1rem', color:'white', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
             <div style={{display:'flex', alignItems:'center', gap:'8px'}}>
               <div style={{width:'32px', height:'32px', background:'rgba(255,255,255,0.2)', borderRadius:'10px', display:'flex', alignItems:'center', justifyContent:'center'}}>

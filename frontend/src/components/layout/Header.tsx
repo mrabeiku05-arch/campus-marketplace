@@ -71,7 +71,7 @@ export default function Header() {
   const canSellFromNav = isSeller && !isAdmin;
 
   return (
-    <nav style={{position:'sticky', top:0, zIndex:999999, backdropFilter:'saturate(180%) blur(24px)', WebkitBackdropFilter:'saturate(180%) blur(24px)', background: mobileOpen ? (isDark ? '#1c1c1e' : '#ffffff') : (isDark ? 'rgba(28,28,30,0.85)' : 'rgba(255,255,255,0.75)'), borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)'}`, transition:'background 0.3s, border-color 0.3s', padding:'0 5%'}}>
+    <nav style={{position:'sticky', top:0, zIndex:999999, background: isDark ? '#1c1c1e' : '#ffffff', borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)'}`, transition:'background 0.3s, border-color 0.3s', padding:'0 5%'}}>
       <div className="nav-shell" style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap:'1rem', height:'58px', maxWidth:'1400px', margin:'0 auto', width:'100%'}}>
         {/* Brand */}
         <Link to="/" className="nav-brand-link" aria-label="Campus Marketplace home" title="Campus Marketplace" style={{color:'var(--text-main)', textDecoration:'none', display:'flex', alignItems:'center', justifyContent:'center', width:'40px', height:'40px', borderRadius:'12px', flexShrink:0, transition:'background 0.2s, opacity 0.2s'}} onClick={closeMobile}>
@@ -97,10 +97,9 @@ export default function Header() {
                 transform: mobileOpen ? 'none' : 'translateX(-50%)', 
                 width: mobileOpen ? '100%' : '240px', 
                 background: mobileOpen ? 'rgba(0,0,0,0.03)' : 'var(--card-bg)', 
-                backdropFilter: 'saturate(180%) blur(24px)', 
                 border: mobileOpen ? 'none' : '1px solid var(--border)', 
                 borderRadius: mobileOpen ? '12px' : '16px', 
-                boxShadow: mobileOpen ? 'none' : '0 12px 48px rgba(0,0,0,0.12)', 
+                boxShadow: isDark ? '0 10px 40px rgba(0,0,0,0.5)' : '0 10px 40px rgba(0,0,0,0.1)', 
                 overflow: 'hidden', 
                 zIndex: 999,
                 marginTop: mobileOpen && catOpen ? '10px' : '0',

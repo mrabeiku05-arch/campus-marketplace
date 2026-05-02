@@ -385,7 +385,7 @@ export default function Home() {
                 style={{ width: '100%' }}
               />
               {suggestionsOpen && suggestions.length > 0 && (
-                <div style={{ position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: '12px', boxShadow: '0 8px 24px rgba(0,0,0,0.15)', zIndex: 9999, maxHeight: '280px', overflowY: 'auto', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)' }}>
+                <div style={{ position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: '12px', boxShadow: '0 8px 24px rgba(0,0,0,0.15)', zIndex: 9999, maxHeight: '280px', overflowY: 'auto' }}>
                   {suggestions.map((suggestion, index) => (
                     <button
                       key={suggestion.id ?? index}
@@ -497,7 +497,7 @@ export default function Home() {
                                 <p style={{ fontSize: '0.68rem', letterSpacing: '0.14em', textTransform: 'uppercase', opacity: 0.78, margin: '0 0 0.35rem', fontWeight: 700 }}>Sponsored</p>
                                 <p style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '-0.02em', margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ad.title}</p>
                               </div>
-                              <span style={{ background: 'rgba(255,255,255,0.14)', backdropFilter: 'blur(10px)', color: '#fff', fontSize: '0.62rem', padding: '4px 10px', borderRadius: '999px', letterSpacing: '0.08em', fontWeight: 700, border: '1px solid rgba(255,255,255,0.15)', flexShrink: 0 }}>AD</span>
+                              <span style={{ background: 'rgba(255,255,255,0.14)', color: '#fff', fontSize: '0.62rem', padding: '4px 10px', borderRadius: '999px', letterSpacing: '0.08em', fontWeight: 700, border: '1px solid rgba(255,255,255,0.15)', flexShrink: 0 }}>AD</span>
                             </div>
                           </div>
                         </div>
@@ -508,7 +508,7 @@ export default function Home() {
               </div>
             </div>
             {stableAds.length > 1 && (
-              <div style={{ position: 'absolute', bottom: '16px', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: '7px', zIndex: 5, background: 'rgba(0,0,0,0.25)', padding: '5px 10px', borderRadius: '999px', backdropFilter: 'blur(8px)' }}>
+              <div style={{ position: 'absolute', bottom: '16px', left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: '7px', zIndex: 5, background: 'rgba(0,0,0,0.5)', padding: '5px 10px', borderRadius: '999px' }}>
                 {stableAds.map((ad, index) => (
                   <button
                     key={ad.id ?? `ad-dot-${index}`}
@@ -587,7 +587,7 @@ export default function Home() {
                     )}
 
                     {promo && (
-                      <span className="boosted-badge" style={{ top: '8px', bottom: 'auto', left: '8px', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', color: '#fff', fontSize: '0.6rem', padding: '0.3rem 0.6rem', borderRadius: '8px', fontWeight: 600, boxShadow: '0 2px 8px rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', gap: '4px', letterSpacing: '0.02em' }}>
+                      <span className="boosted-badge" style={{ top: '8px', bottom: 'auto', left: '8px', background: 'rgba(0,0,0,0.85)', color: '#fff', fontSize: '0.6rem', padding: '0.3rem 0.6rem', borderRadius: '8px', fontWeight: 600, boxShadow: '0 2px 8px rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', gap: '4px', letterSpacing: '0.02em' }}>
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#facc15" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
                         {promo.replace(/[⚡⏳🎓📦🏷️]\s*/g, '')}
                       </span>

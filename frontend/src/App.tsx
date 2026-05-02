@@ -108,8 +108,7 @@ function GlobalImageViewer() {
     <div 
       style={{
         position: 'fixed', inset: 0, zIndex: 1000001, 
-        background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(18px)', 
-        WebkitBackdropFilter: 'blur(18px)',
+        background: 'rgba(0,0,0,0.92)', 
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         cursor: 'zoom-out',
         animation: 'fadeIn 0.3s ease forwards'

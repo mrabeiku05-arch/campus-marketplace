@@ -188,9 +188,9 @@ export default function Hero() {
             <AnimatePresence mode="wait">
               <motion.span
                 key={cycleWords[wordIndex]}
-                initial={{ opacity: 0, y: 30, filter: 'blur(10px)', scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
-                exit={{ opacity: 0, y: -30, filter: 'blur(10px)', scale: 0.95 }}
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -30, scale: 0.95 }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 style={{
                   position: 'absolute',
@@ -237,12 +237,10 @@ export default function Hero() {
             <div
               className="relative flex items-center overflow-hidden"
               style={{
-                background: 'rgba(255,255,255,0.12)',
-                backdropFilter: 'saturate(200%) blur(28px)',
-                WebkitBackdropFilter: 'saturate(200%) blur(28px)',
-                border: '1px solid rgba(255,255,255,0.22)',
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.15)',
                 borderRadius: '999px',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 1px rgba(255,255,255,0.15)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
               }}
             >
               <div className="pl-5 text-white/60">
