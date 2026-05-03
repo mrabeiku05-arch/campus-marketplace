@@ -122,24 +122,21 @@ $tabTitles = [
 ];
 $headerTitle = $tabTitles[$activeTab] ?? 'Dashboard';
 
-// Force body class for layout
-echo '<style>body { margin: 0 !important; overflow-x: hidden; }</style>';
-echo '<script>document.body.classList.add("dashboard-v2");</script>';
+// Force body + html classes for layout reset (overrides style.css body{display:flex;flex-direction:column})
+echo '<style>html, body.dashboard-v2 { margin: 0 !important; padding: 0 !important; width: 100% !important; overflow-x: hidden !important; display: block !important; flex-direction: unset !important; }</style>';
+echo '<script>document.body.classList.add("dashboard-v2", "dashboard-page"); document.documentElement.classList.add("dashboard-v2-html");</script>';
 echo '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">';
 echo '<link rel="stylesheet" href="' . getAssetUrl('assets/css/dashboard-v2.css') . '">';
 ?>
 
 <!-- MOBILE TOGGLE & OVERLAY -->
-<button class="dash-mobile-toggle" onclick="document.getElementById('dashSidebar').classList.add('open'); document.getElementById('dashSidebarOverlay').classList.add('open');">
-    <i class="fa-solid fa-bars" style="font-size: 1.2rem; color: var(--dash-text);"></i>
-</button>
-<div class="dash-sidebar-overlay" id="dashSidebarOverlay" onclick="document.getElementById('dashSidebar').classList.remove('open'); this.classList.remove('open');"></div>
+<div class="dash-sidebar-overlay sidebar-overlay" id="dashSidebarOverlay"></div>
 
 <!-- SHELL -->
 <div class="dash-shell">
 
     <!-- LEFT SIDEBAR -->
-    <aside class="dash-sidebar" id="dashSidebar">
+    <aside class="dash-sidebar sidebar" id="dashSidebar">
         <div class="dash-sidebar-brand">
             <div class="dash-brand-icon">
                 <i class="fa-solid fa-store" style="color:#fff; font-size:1.1rem;"></i>
@@ -186,7 +183,7 @@ echo '<link rel="stylesheet" href="' . getAssetUrl('assets/css/dashboard-v2.css'
             <a href="dashboard.php?tab=wallet" class="<?= $activeTab === 'wallet' ? 'active' : '' ?>">
                 <i class="fa-solid fa-wallet dash-nav-icon"></i> Wallet
             </a>
-            <a href="dashboard.php?tab=messages" class="<?= $activeTab === 'messages' ? 'active' : '' ?>">
+            <a href="messages.php" class="<?= $activeTab === 'messages' ? 'active' : '' ?>">
                 <i class="fa-solid fa-envelope dash-nav-icon"></i> Messages
                 <?php if ($unreadMsgCount > 0): ?>
                     <span class="dash-nav-badge purple"><?= $unreadMsgCount ?></span>
@@ -205,50 +202,97 @@ echo '<link rel="stylesheet" href="' . getAssetUrl('assets/css/dashboard-v2.css'
             <div class="dash-sidebar-wallet-balance">GHS <?= number_format((float)$user['balance'], 2) ?></div>
             <a href="dashboard.php?tab=wallet" class="dash-withdraw-btn">Withdraw</a>
         </div>
+        <div class="sidebar-footer" style="padding: 16px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: auto;">
+          <a href="index.php" style="display:flex; align-items:center; gap:10px; color:rgba(255,255,255,0.7); text-decoration:none; font-size:0.85rem; padding: 8px 12px; border-radius:8px;">
+            <i class="fas fa-arrow-left"></i> Back to Site
+          </a>
+        </div>
     </aside>
 
     <!-- MAIN CONTENT -->
-    <main class="dash-main">
+    <main class="dash-main main-content">
         <!-- TOP HEADER -->
-        <header class="dash-header">
-            <div class="dash-header-left">
-                <h1 id="headerTitle"><?= htmlspecialchars($headerTitle) ?></h1>
-                <p id="headerSubtitle">Welcome back, <?= htmlspecialchars($user['username']) ?>! Here's what's happening with your store today.</p>
+        <header class="dash-topbar" style="
+          position: sticky; top: 0; z-index: 100;
+          background: #fff; border-bottom: 1px solid #e5e7eb;
+          display: flex; align-items: center;
+          padding: 0 16px; height: 60px; gap: 12px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        ">
+          <!-- Hamburger -->
+          <button id="sidebarToggle" class="sidebar-toggle hamburger-btn" onclick="toggleSidebar()" style="background:none;border:none;cursor:pointer;padding:4px;flex-shrink:0;">
+            <i class="fas fa-bars" style="font-size:1.2rem;color:#374151;"></i>
+          </button>
+
+          <!-- Title block — takes all remaining space -->
+          <div style="flex:1; min-width:0;">
+            <h1 style="
+              margin:0; font-size:1.1rem; font-weight:700;
+              color:#111827; white-space:nowrap;
+              overflow:hidden; text-overflow:ellipsis;
+            "><?= htmlspecialchars($headerTitle ?? 'Dashboard') ?></h1>
+          </div>
+
+          <!-- Right actions — never shrink -->
+          <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+            <div style="display:inline-flex; align-items:center; gap:6px;">
+              <a href="add_product.php" id="topAddProductBtn" style="
+                display:inline-flex; align-items:center; gap:6px;
+                background:#6d28d9; color:#fff; font-size:0.8rem;
+                font-weight:600; padding:7px 12px; border-radius:8px;
+                text-decoration:none; white-space:nowrap; transition: background 0.2s, opacity 0.2s;
+              "><i class="fa-solid fa-plus"></i> Add Product</a>
+              <span id="topSlotCounter" class="dash-slot-counter" title="Loading slots...">
+                <i class="fa-solid fa-layer-group" style="font-size:0.65rem;"></i>
+                <span id="topSlotText">...</span>
+              </span>
             </div>
-            <div class="dash-header-right">
-                <?php if ($canCreateProduct): ?>
-                    <a href="add_product.php" class="dash-add-btn">
-                        <i class="fa-solid fa-plus"></i> Add Product
-                    </a>
-                <?php endif; ?>
-                <a href="<?= $baseUrl ?>dashboard.php" class="dash-notif-btn">
-                    <i class="fa-regular fa-bell"></i>
-                    <?php if ($unreadNotifCount > 0): ?>
-                        <span class="dash-notif-count"><?= $unreadNotifCount ?></span>
-                    <?php endif; ?>
-                </a>
-                <div class="dash-header-avatar-wrap" style="position:relative;">
-                    <div class="dash-header-avatar" onclick="document.getElementById('headerProfileDropdown').classList.toggle('open')" style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-                        <div style="width:38px; height:38px; border-radius:50%; overflow:hidden; border:2px solid var(--dash-border);">
-                            <?php if (!empty($user['profile_pic'])): ?>
-                                <img src="<?= getAssetUrl('uploads/' . htmlspecialchars($user['profile_pic'])) ?>" alt="Profile" style="width:100%; height:100%; object-fit:cover;">
-                            <?php else: ?>
-                                <div style="width:100%; height:100%; background:var(--dash-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">
-                                    <?= htmlspecialchars(strtoupper(substr((string)$user['username'], 0, 1))) ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                        <i class="fa-solid fa-chevron-down" style="font-size:0.7rem; color:var(--dash-text-muted);"></i>
-                    </div>
-                    <!-- Dropdown -->
-                    <div id="headerProfileDropdown" class="dash-profile-dropdown" style="display:none; position:absolute; top:calc(100% + 12px); right:0; width:200px; background:var(--dash-card); border:1px solid var(--dash-border); border-radius:12px; box-shadow:var(--dash-shadow-lg); padding:8px; z-index:100;">
-                        <a href="edit_profile.php" class="dash-dropdown-item" style="display:flex; align-items:center; gap:10px; padding:10px 12px; color:var(--dash-text); text-decoration:none; font-size:0.85rem; font-weight:600; border-radius:8px; transition:background 0.2s;"><i class="fa-regular fa-user" style="width:16px;"></i> Profile</a>
-                        <a href="dashboard.php?tab=settings" class="dash-dropdown-item" style="display:flex; align-items:center; gap:10px; padding:10px 12px; color:var(--dash-text); text-decoration:none; font-size:0.85rem; font-weight:600; border-radius:8px; transition:background 0.2s;"><i class="fa-solid fa-gear" style="width:16px;"></i> Settings</a>
-                        <div style="height:1px; background:var(--dash-border); margin:4px 0;"></div>
-                        <a href="logout.php" class="dash-dropdown-item" style="display:flex; align-items:center; gap:10px; padding:10px 12px; color:var(--dash-red); text-decoration:none; font-size:0.85rem; font-weight:600; border-radius:8px; transition:background 0.2s;"><i class="fa-solid fa-arrow-right-from-bracket" style="width:16px;"></i> Logout</a>
-                    </div>
+
+            <!-- Notification Bell + Dropdown -->
+            <div class="dash-notif-wrapper" id="notifWrapper">
+              <button type="button" class="dash-notif-bell" id="notifBellBtn" onclick="toggleNotifDropdown()" aria-label="Notifications">
+                <i class="fas fa-bell" style="color:#6b7280;font-size:1rem;transition:color 0.2s;"></i>
+                <span class="dash-notif-count" id="notifBadge" style="<?= $unreadNotifCount > 0 ? '' : 'display:none;' ?>"><?= $unreadNotifCount ?></span>
+              </button>
+              <div class="dash-notif-dropdown" id="notifDropdown">
+                <div class="dash-notif-dropdown-header">
+                  <span class="dash-notif-dropdown-title">Notifications</span>
+                  <button type="button" id="markAllReadBtn" onclick="markAllNotifRead()" class="dash-notif-mark-read" title="Mark all as read">
+                    <i class="fa-solid fa-check-double"></i> Mark all read
+                  </button>
                 </div>
+                <div class="dash-notif-list" id="notifList">
+                  <div class="dash-notif-empty" id="notifEmpty">
+                    <i class="fa-regular fa-bell-slash" style="font-size:1.5rem;margin-bottom:8px;opacity:0.4;"></i>
+                    <div>No notifications yet</div>
+                  </div>
+                </div>
+                <a href="dashboard.php?tab=overview" class="dash-notif-dropdown-footer">
+                  View all activity <i class="fa-solid fa-arrow-right" style="font-size:0.65rem;"></i>
+                </a>
+              </div>
             </div>
+
+            <div style="position:relative;" onclick="document.getElementById('headerProfileDropdown').classList.toggle('open')">
+              <?php if (!empty($user['profile_pic'])): ?>
+              <img src="<?= getAssetUrl('uploads/' . htmlspecialchars($user['profile_pic'])) ?>"
+                style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid #e5e7eb;cursor:pointer;"
+                onerror="this.src='<?= getAssetUrl('assets/img/default-avatar_generated.png') ?>'">
+              <?php else: ?>
+              <div style="width:36px; height:36px; border-radius:50%; border:2px solid #e5e7eb; background:var(--dash-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; cursor:pointer;">
+                  <?= htmlspecialchars(strtoupper(substr((string)$user['username'], 0, 1))) ?>
+              </div>
+              <?php endif; ?>
+              
+              <!-- Dropdown -->
+              <div id="headerProfileDropdown" class="dash-profile-dropdown" style="display:none; position:absolute; top:calc(100% + 12px); right:0; width:200px; background:var(--dash-card); border:1px solid var(--dash-border); border-radius:12px; box-shadow:var(--dash-shadow-lg); padding:8px; z-index:100;">
+                  <a href="edit_profile.php" class="dash-dropdown-item" style="display:flex; align-items:center; gap:10px; padding:10px 12px; color:var(--dash-text); text-decoration:none; font-size:0.85rem; font-weight:600; border-radius:8px; transition:background 0.2s;"><i class="fa-regular fa-user" style="width:16px;"></i> Profile</a>
+                  <a href="dashboard.php?tab=settings" class="dash-dropdown-item" style="display:flex; align-items:center; gap:10px; padding:10px 12px; color:var(--dash-text); text-decoration:none; font-size:0.85rem; font-weight:600; border-radius:8px; transition:background 0.2s;"><i class="fa-solid fa-gear" style="width:16px;"></i> Settings</a>
+                  <div style="height:1px; background:var(--dash-border); margin:4px 0;"></div>
+                  <a href="logout.php" class="dash-dropdown-item" style="display:flex; align-items:center; gap:10px; padding:10px 12px; color:var(--dash-red); text-decoration:none; font-size:0.85rem; font-weight:600; border-radius:8px; transition:background 0.2s;"><i class="fa-solid fa-arrow-right-from-bracket" style="width:16px;"></i> Logout</a>
+              </div>
+            </div>
+          </div>
         </header>
 
         <div class="dash-content">
@@ -505,9 +549,13 @@ echo '<link rel="stylesheet" href="' . getAssetUrl('assets/css/dashboard-v2.css'
                             <h2 class="dash-card-title" style="font-size:1.2rem;">Product Command Center</h2>
                             <p style="font-size:0.85rem; color:var(--dash-text-muted); margin:4px 0 0;">Search, filter, and manage stock without leaving the workspace.</p>
                         </div>
-                        <?php if ($canCreateProduct): ?>
-                            <a href="add_product.php" class="dash-add-btn" style="padding:8px 16px; font-size:0.8rem;"><i class="fa-solid fa-plus"></i> Add Product</a>
-                        <?php endif; ?>
+                        <div style="display:inline-flex; align-items:center; gap:8px;">
+                            <a href="add_product.php" class="dash-add-btn" id="invAddProductBtn" style="padding:8px 16px; font-size:0.8rem;"><i class="fa-solid fa-plus"></i> Add Product</a>
+                            <span class="dash-slot-counter" id="invSlotCounter" title="Loading slots...">
+                                <i class="fa-solid fa-layer-group" style="font-size:0.65rem;"></i>
+                                <span id="invSlotText">...</span>
+                            </span>
+                        </div>
                     </div>
 
                     <form method="GET" action="dashboard.php" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; gap:16px; flex-wrap:wrap;">
@@ -637,8 +685,8 @@ echo '<link rel="stylesheet" href="' . getAssetUrl('assets/css/dashboard-v2.css'
                     </div>
 
                     <?php if (count($seller_orders) > 0): ?>
-                        <div style="overflow-x:auto;">
-                            <table class="dash-table">
+                        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%;">
+                            <table class="dash-table orders-table" style="min-width: 600px; width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>Order ID</th>
@@ -869,54 +917,94 @@ echo '<link rel="stylesheet" href="' . getAssetUrl('assets/css/dashboard-v2.css'
 
             <!-- MESSAGES TAB -->
             <?php if ($activeTab === 'messages'): ?>
+            <?php $me = $me ?? $user['id']; ?>
             <div id="tab-messages" class="dash-tab-panel active">
-                <div class="dash-row-2-equal">
-                    <div class="dash-card">
-                        <div class="dash-card-head">
-                            <h2 class="dash-card-title">Recent Conversations</h2>
+                <style>
+                .msg-bubble { max-width: 70%; padding: 10px 14px; border-radius: 12px; font-size: 0.9rem; line-height: 1.4; }
+                .msg-from-buyer { background: #f3f4f6; color: #1f2937; align-self: flex-start; border-bottom-left-radius: 4px; }
+                .msg-from-seller { background: #6d28d9; color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+                .msg-thread { display: flex; flex-direction: column; gap: 10px; padding: 16px; overflow-y: auto; max-height: calc(100vh - 200px); }
+                .msg-send-bar { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid #e5e7eb; background: #fff; }
+                .msg-send-bar input { flex:1; border:1px solid #e5e7eb; border-radius:8px; padding:10px 14px; font-size:0.9rem; }
+                .msg-send-bar button { background:#6d28d9; color:#fff; border:none; border-radius:8px; padding:10px 18px; font-weight:600; cursor:pointer; }
+                </style>
+                <?php
+                if (!isset($dash_chat_users)) {
+                    echo "<script>window.location.href='messages.php';</script>";
+                }
+                ?>
+                <div class="dash-card" style="padding:0; overflow:hidden;">
+                    <?php if (empty($dash_chat_active_user)): ?>
+                        <!-- State 1: Conversation List -->
+                        <div class="dash-card-head" style="padding:16px;">
+                            <h2 class="dash-card-title">Conversations</h2>
                         </div>
-                        <?php if (!empty($sellerQuickContacts)): ?>
+                        <?php if (empty($dash_chat_users)): ?>
+                            <div class="dash-empty" style="padding:24px;">No active conversations.</div>
+                        <?php else: ?>
                             <div style="display:flex; flex-direction:column;">
-                                <?php foreach ($sellerQuickContacts as $contactOrder): ?>
-                                    <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid rgba(0,0,0,0.04);">
-                                        <div style="display:flex; align-items:center; gap:12px;">
-                                            <div style="width:36px; height:36px; border-radius:50%; background:var(--dash-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700;">
-                                                <?= strtoupper(substr($contactOrder['buyer_name'], 0, 1)) ?>
-                                            </div>
-                                            <div>
-                                                <div style="font-weight:700; font-size:0.9rem;"><?= htmlspecialchars($contactOrder['buyer_name']) ?></div>
-                                                <div style="font-size:0.75rem; color:var(--dash-text-muted);">Order #<?= $contactOrder['id'] ?></div>
-                                            </div>
+                                <?php foreach ($dash_chat_users as $u): ?>
+                                    <a href="messages.php?conversation_id=<?= $u['id'] ?>" style="display:flex; align-items:center; gap:12px; padding:16px; border-bottom:1px solid #e5e7eb; text-decoration:none; color:inherit; transition:background 0.2s;">
+                                        <div style="position:relative;">
+                                            <?php if ($u['profile_pic']): ?>
+                                                <img src="<?= getAssetUrl('uploads/' . htmlspecialchars($u['profile_pic'])) ?>" style="width:48px; height:48px; border-radius:50%; object-fit:cover;">
+                                            <?php else: ?>
+                                                <div style="width:48px; height:48px; border-radius:50%; background:var(--dash-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.2rem;"><?= strtoupper(substr($u['username'], 0, 1)) ?></div>
+                                            <?php endif; ?>
+                                            <?php if ($u['unread'] > 0): ?>
+                                                <span style="position:absolute; top:-2px; right:-2px; background:#ef4444; color:#fff; font-size:0.6rem; font-weight:700; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff;"><?= $u['unread'] ?></span>
+                                            <?php endif; ?>
                                         </div>
-                                        <a href="chat.php?user=<?= $contactOrder['buyer_id'] ?>" class="dash-btn dash-btn-outline">Open</a>
-                                    </div>
+                                        <div style="flex:1; min-width:0;">
+                                            <div style="font-weight:700; color:#111827;"><?= htmlspecialchars($u['username']) ?></div>
+                                            <div style="font-size:0.8rem; color:#6b7280; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"><?= htmlspecialchars($u['last_msg'] ?? 'New conversation') ?></div>
+                                        </div>
+                                    </a>
                                 <?php endforeach; ?>
                             </div>
-                        <?php else: ?>
-                            <div class="dash-empty">No active conversations.</div>
                         <?php endif; ?>
-                    </div>
-
-                    <div class="dash-card">
-                        <div class="dash-card-head">
-                            <h2 class="dash-card-title">Contact Support</h2>
+                    <?php else: ?>
+                        <!-- State 2: Conversation Thread -->
+                        <div style="display:flex; align-items:center; gap:12px; padding:16px; border-bottom:1px solid #e5e7eb; background:#f9fafb;">
+                            <a href="messages.php" style="color:#6b7280; text-decoration:none;"><i class="fas fa-arrow-left"></i></a>
+                            <?php if ($dash_chat_active_user['profile_pic']): ?>
+                                <img src="<?= getAssetUrl('uploads/' . htmlspecialchars($dash_chat_active_user['profile_pic'])) ?>" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+                            <?php else: ?>
+                                <div style="width:36px; height:36px; border-radius:50%; background:var(--dash-primary); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem;"><?= strtoupper(substr($dash_chat_active_user['username'], 0, 1)) ?></div>
+                            <?php endif; ?>
+                            <div style="font-weight:700; color:#111827;"><?= htmlspecialchars($dash_chat_active_user['username']) ?></div>
                         </div>
-                        <?php if (!isAdmin() && $supportAdminId > 0): ?>
-                            <form method="POST" action="chat.php?action=send_fast">
-                                <?= csrf_field() ?>
-                                <input type="hidden" name="receiver_id" value="<?= (int)$supportAdminId ?>">
-                                <textarea name="message" placeholder="How can we help you today?" required style="width:100%; min-height:100px; padding:12px; border:1px solid var(--dash-border); border-radius:10px; font-family:inherit; margin-bottom:12px; resize:vertical;"></textarea>
-                                <div style="display:flex; gap:12px;">
-                                    <button type="submit" class="dash-btn dash-btn-primary">Send Message</button>
-                                    <a href="chat.php?user=<?= $supportAdminId ?>" class="dash-btn dash-btn-outline">View Chat History</a>
-                                </div>
-                            </form>
-                        <?php else: ?>
-                            <div class="dash-empty">Support chat unavailable.</div>
-                        <?php endif; ?>
-                    </div>
+                        <div class="msg-thread">
+                            <?php if (empty($dash_chat_messages)): ?>
+                                <div style="text-align:center; color:#9ca3af; font-size:0.85rem; padding:20px;">Say hello to <?= htmlspecialchars($dash_chat_active_user['username']) ?>!</div>
+                            <?php else: ?>
+                                <?php foreach ($dash_chat_messages as $msg): ?>
+                                    <?php $isMe = ($msg['sender_id'] == $me); ?>
+                                    <div class="msg-bubble <?= $isMe ? 'msg-from-seller' : 'msg-from-buyer' ?>">
+                                        <?= nl2br(htmlspecialchars($msg['message'])) ?>
+                                        <div style="font-size:0.65rem; margin-top:4px; opacity:0.7; text-align:right;">
+                                            <?= date('h:i A', strtotime($msg['created_at'])) ?>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                        <form method="POST" action="messages.php" class="msg-send-bar">
+                            <?= csrf_field() ?>
+                            <input type="hidden" name="conversation_id" value="<?= $dash_chat_active_user['id'] ?>">
+                            <input type="text" name="message_body" placeholder="Type a message..." required autocomplete="off" style="background:#fff !important; color:#1f2937 !important; border:1px solid #e5e7eb !important;">
+                            <button type="submit">Send</button>
+                        </form>
+                    <?php endif; ?>
                 </div>
             </div>
+            <script>
+            // Auto-scroll chat thread to bottom
+            (function() {
+                var t = document.querySelector('.msg-thread');
+                if (t) t.scrollTop = t.scrollHeight;
+            })();
+            </script>
             <?php endif; ?>
 
             <!-- SETTINGS TAB -->
@@ -1245,4 +1333,279 @@ echo '<link rel="stylesheet" href="' . getAssetUrl('assets/css/dashboard-v2.css'
             });
         }
     });
+</script>
+
+<script>
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.querySelector('.sidebar-overlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('active');
+}
+
+document.querySelector('.sidebar-overlay')
+  .addEventListener('click', function() {
+    document.querySelector('.sidebar').classList.remove('open');
+    this.classList.remove('active');
+  });
+</script>
+
+<!-- ═══════ NOTIFICATION DROPDOWN + SLOT COUNTER LOGIC ═══════ -->
+<script>
+(function() {
+  'use strict';
+  const POLL_INTERVAL = 30000;
+  const MAX_DROPDOWN_ITEMS = 15;
+  let notifCache = [];
+  let dropdownOpen = false;
+
+  // ─── Toggle Dropdown ───
+  window.toggleNotifDropdown = function() {
+    const dd = document.getElementById('notifDropdown');
+    dropdownOpen = !dropdownOpen;
+    dd.classList.toggle('open', dropdownOpen);
+    if (dropdownOpen) {
+      fetchNotifications();
+    }
+  };
+
+  // ─── Close on outside click ───
+  document.addEventListener('click', function(e) {
+    const wrapper = document.getElementById('notifWrapper');
+    if (wrapper && !wrapper.contains(e.target)) {
+      const dd = document.getElementById('notifDropdown');
+      if (dd) { dd.classList.remove('open'); dropdownOpen = false; }
+    }
+  });
+
+  // ─── Fetch Notifications ───
+  function fetchNotifications() {
+    fetch('backend/index.php?route=notifications', { credentials: 'same-origin' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.error) return;
+        notifCache = (data.notifications || []).sort(function(a, b) { return b.id - a.id; }).slice(0, MAX_DROPDOWN_ITEMS);
+        renderNotifList();
+        updateBadge(data.unread_count || 0);
+      })
+      .catch(function() {});
+  }
+
+  // ─── Poll for count updates ───
+  function pollCounts() {
+    fetch('backend/index.php?route=notifications/unread-count', { credentials: 'same-origin' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (!data.error) {
+          updateBadge(data.unread_count || 0);
+        }
+      })
+      .catch(function() {});
+  }
+
+  // ─── Update Badge Count ───
+  function updateBadge(count) {
+    var badge = document.getElementById('notifBadge');
+    if (!badge) return;
+    if (count > 0) {
+      badge.textContent = count > 99 ? '99+' : count;
+      badge.style.display = '';
+      var bell = document.querySelector('#notifBellBtn i');
+      if (bell) { bell.style.color = 'var(--dash-primary)'; }
+    } else {
+      badge.style.display = 'none';
+      var bell2 = document.querySelector('#notifBellBtn i');
+      if (bell2) { bell2.style.color = '#6b7280'; }
+    }
+  }
+
+  window.handleNotifClick = function(e, id, path) {
+    e.preventDefault();
+    var item = notifCache.find(function(n) { return n.id === id; });
+    if (item && isUnread(item)) {
+        item.is_read = 1;
+        var currentBadge = parseInt(document.getElementById('notifBadge').textContent) || 0;
+        updateBadge(Math.max(0, currentBadge - 1));
+        fetch('backend/index.php?route=notifications/' + id + '/read', { 
+            method: 'PATCH',
+            credentials: 'same-origin' 
+        });
+    }
+    document.getElementById('notifDropdown').classList.remove('open');
+    dropdownOpen = false;
+    window.location.href = path || 'dashboard.php';
+  };
+
+  // ─── Render Notification List ───
+  function renderNotifList() {
+    var list = document.getElementById('notifList');
+    if (!list) return;
+
+    if (notifCache.length === 0) {
+      list.innerHTML = '';
+      list.appendChild(createEmptyState());
+      return;
+    }
+
+    list.innerHTML = '';
+    notifCache.forEach(function(n) {
+      var item = document.createElement('a');
+      item.href = n.redirect_path || n.link_url || 'dashboard.php';
+      item.className = 'dash-notif-item' + (isUnread(n) ? ' unread' : '');
+      item.onclick = function(e) { handleNotifClick(e, n.id, item.href); };
+      item.innerHTML =
+        '<div class="dash-notif-item-icon ' + notifIconClass(n.type) + '">' +
+          '<i class="' + notifIcon(n.type) + '"></i>' +
+        '</div>' +
+        '<div class="dash-notif-item-body">' +
+          '<div class="dash-notif-item-title">' + escHtml(n.title || notifFallbackTitle(n.type)) + '</div>' +
+          '<div class="dash-notif-item-msg">' + escHtml(truncate(n.message, 80)) + '</div>' +
+          '<div class="dash-notif-item-time">' + relTime(n.created_at) + '</div>' +
+        '</div>' +
+        (isUnread(n) ? '<span class="dash-notif-dot"></span>' : '');
+      list.appendChild(item);
+    });
+  }
+
+  function createEmptyState() {
+    var div = document.createElement('div');
+    div.className = 'dash-notif-empty';
+    div.innerHTML = '<i class="fa-regular fa-bell-slash" style="font-size:1.5rem;margin-bottom:8px;opacity:0.4;"></i><div>No notifications yet</div>';
+    return div;
+  }
+
+  // ─── Mark All Read ───
+  window.markAllNotifRead = function() {
+    fetch('backend/index.php?route=notifications/read-all', { method: 'PATCH', credentials: 'same-origin' })
+      .catch(function() {});
+    // Optimistically update UI
+    notifCache.forEach(function(n) { n.is_read = 1; });
+    renderNotifList();
+    updateBadge(0);
+  };
+
+  // ─── Helpers ───
+  function isUnread(n) { return !n.is_read || n.is_read === '0' || n.is_read === 0 || n.is_read === false; }
+
+  function notifIcon(type) {
+    var map = {
+      'message': 'fa-regular fa-comment-dots',
+      'new_message': 'fa-regular fa-comment-dots',
+      'order': 'fa-solid fa-bag-shopping',
+      'new_order': 'fa-solid fa-bag-shopping',
+      'order_received': 'fa-solid fa-bag-shopping',
+      'order_update': 'fa-solid fa-truck',
+      'approval': 'fa-solid fa-check-circle',
+      'rejection': 'fa-solid fa-xmark-circle',
+      'subscription': 'fa-solid fa-star',
+      'slot': 'fa-solid fa-layer-group',
+      'payment': 'fa-solid fa-credit-card',
+      'system': 'fa-solid fa-gear'
+    };
+    return map[type] || 'fa-solid fa-bell';
+  }
+
+  function notifIconClass(type) {
+    if (['order','new_order','order_received','approval'].indexOf(type) >= 0) return 'green';
+    if (['rejection','order_rejected','order_cancelled'].indexOf(type) >= 0) return 'red';
+    if (['subscription', 'slot'].indexOf(type) >= 0) return 'amber';
+    if (['message','new_message'].indexOf(type) >= 0) return 'purple';
+    if (['payment'].indexOf(type) >= 0) return 'blue';
+    return 'blue';
+  }
+
+  function notifFallbackTitle(type) {
+    var map = { 'message':'New Message','order':'New Order','approval':'Product Approved','rejection':'Product Rejected','subscription':'Subscription Update','payment':'Payment Confirmed' };
+    return map[type] || 'Notification';
+  }
+
+  function escHtml(s) {
+    var d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
+  }
+
+  function truncate(s, n) {
+    if (!s) return '';
+    return s.length > n ? s.substring(0, n) + '\u2026' : s;
+  }
+
+  function relTime(dateStr) {
+    if (!dateStr) return '';
+    var now = Date.now();
+    var ts = new Date(dateStr.replace(' ', 'T') + (dateStr.indexOf('+') >= 0 || dateStr.indexOf('Z') >= 0 ? '' : 'Z')).getTime();
+    var diff = Math.floor((now - ts) / 1000);
+    if (diff < 60) return 'Just now';
+    if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+    if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+    if (diff < 604800) return Math.floor(diff / 86400) + 'd ago';
+    return new Date(ts).toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+  }
+
+  // ─── Slot Counter Logic ───
+  function fetchSlotCount() {
+    fetch('backend/index.php?route=users/slot-count', { credentials: 'same-origin' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.error) return;
+        updateSlotUI(data.available_slots, data.used_slots, data.total_slots);
+      })
+      .catch(function() {});
+  }
+
+  function updateSlotUI(available, used, total) {
+    var textStr = available + ' left';
+    
+    var addBtns = [document.getElementById('topAddProductBtn'), document.getElementById('invAddProductBtn')];
+    var counters = [document.getElementById('topSlotCounter'), document.getElementById('invSlotCounter')];
+    var texts = [document.getElementById('topSlotText'), document.getElementById('invSlotText')];
+    
+    addBtns.forEach(function(btn) {
+      if (!btn) return;
+      if (available <= 0) {
+        btn.style.opacity = '0.5';
+        btn.style.filter = 'grayscale(100%)';
+        btn.onclick = function(e) {
+            e.preventDefault();
+            alert('No slots available. Please upgrade your tier to add more products.');
+            window.location.href = 'dashboard.php?tab=wallet';
+        };
+      } else {
+        btn.style.opacity = '1';
+        btn.style.filter = 'none';
+        btn.onclick = null;
+      }
+    });
+
+    counters.forEach(function(counter) {
+      if (!counter) return;
+      counter.className = 'dash-slot-counter';
+      if (available <= 0) {
+        counter.classList.add('dash-slot-full');
+        counter.title = 'No slots available';
+        var icon = counter.querySelector('i');
+        if (icon) icon.className = 'fa-solid fa-lock';
+      } else if (available === 1) {
+        counter.classList.add('dash-slot-warning');
+        counter.title = 'Low slots warning';
+        var icon2 = counter.querySelector('i');
+        if (icon2) icon2.className = 'fa-solid fa-triangle-exclamation';
+      } else {
+        counter.title = 'Product slots used';
+        var icon3 = counter.querySelector('i');
+        if (icon3) icon3.className = 'fa-solid fa-layer-group';
+      }
+    });
+
+    texts.forEach(function(textElem) {
+      if (!textElem) return;
+      textElem.textContent = available <= 0 ? 'Full (' + used + '/' + total + ')' : textStr;
+    });
+  }
+
+  // ─── Init ───
+  fetchNotifications();
+  fetchSlotCount();
+  setInterval(pollCounts, POLL_INTERVAL);
+})();
 </script>

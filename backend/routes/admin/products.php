@@ -34,7 +34,7 @@ elseif ($method === 'PUT' && $productId && $productAction === 'approve') {
     $stmt->execute([$productId]);
     $p = $stmt->fetch();
     if ($p) {
-        $pdo->prepare("INSERT INTO notifications (user_id, type, message, reference_id) VALUES (?, 'product_approved', ?, ?)")
+        $pdo->prepare("INSERT INTO notifications (user_id, type, title, message, reference_id) VALUES (?, 'approval', 'Product Approved', ?, ?)")
             ->execute([$p['user_id'], "Your product \"{$p['title']}\" has been approved!", $productId]);
     }
 
@@ -49,7 +49,7 @@ elseif ($method === 'PUT' && $productId && $productAction === 'reject') {
     $stmt->execute([$productId]);
     $p = $stmt->fetch();
     if ($p) {
-        $pdo->prepare("INSERT INTO notifications (user_id, type, message, reference_id) VALUES (?, 'product_rejected', ?, ?)")
+        $pdo->prepare("INSERT INTO notifications (user_id, type, title, message, reference_id) VALUES (?, 'rejection', 'Product Rejected', ?, ?)")
             ->execute([$p['user_id'], "Your product \"{$p['title']}\" was rejected.", $productId]);
     }
 

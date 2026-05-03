@@ -60,7 +60,20 @@ if ($app_env === 'production') {
         if (!headers_sent()) {
             header('Content-Type: text/html; charset=utf-8');
         }
-        die('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Something went wrong | Campus Marketplace</title><style>body{background:#0a0f1e;color:#fff;font-family:system-ui,-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;text-align:center;}.card{background:#111;padding:3rem;border-radius:24px;border:1px solid rgba(255,255,255,0.1);max-width:450px;box-shadow:0 40px 100px rgba(0,0,0,0.4);}h1{font-size:2rem;margin:0;color:#7c3aed;}p{color:rgba(255,255,255,0.6);line-height:1.6;margin-top:1rem;font-size:1.1rem;}.btn{display:inline-block;margin-top:2rem;padding:10px 24px;background:#7c3aed;color:#fff;text-decoration:none;border-radius:99px;font-weight:700;transition:opacity 0.2s;}.btn:hover{opacity:0.9;}</style></head><body><div class="card"><h1>Ouch! Something went wrong.</h1><p>Our engineers have been notified and are looking into it. Please try again in a few moments.</p><a href="/" class="btn">Back to Home</a></div></body></html>');
+        $errMsg = htmlspecialchars($e->getMessage() . ' | TRACE: ' . $e->getTraceAsString(), ENT_QUOTES, 'UTF-8');
+        $errFile = htmlspecialchars($e->getFile(), ENT_QUOTES, 'UTF-8');
+        $errLine = $e->getLine();
+        die("<!DOCTYPE html><html><head><title>Debug</title><style>body{background:#0a0f1e;color:#fff;font-family:monospace;padding:2rem;}pre{background:#111;padding:1rem;border-radius:12px;overflow:auto;font-size:0.8rem;color:#ff6b6b;}</style></head><body><h1 style='color:#7c3aed'>Debug Error</h1><pre>Message: $errMsg\nFile: $errFile\nLine: $errLine</pre></body></html>");
+    });
+    register_shutdown_function(function() {
+        $err = error_get_last();
+        if ($err && in_array($err['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+            if (!headers_sent()) { http_response_code(500); header('Content-Type: text/html; charset=utf-8'); }
+            $m = htmlspecialchars($err['message'], ENT_QUOTES, 'UTF-8');
+            $f = htmlspecialchars($err['file'], ENT_QUOTES, 'UTF-8');
+            $l = $err['line'];
+            echo "<!DOCTYPE html><html><head><title>Fatal</title><style>body{background:#0a0f1e;color:#fff;font-family:monospace;padding:2rem;}pre{background:#111;padding:1rem;border-radius:12px;overflow:auto;font-size:0.8rem;color:#ff6b6b;}</style></head><body><h1 style='color:#ef4444'>Fatal/Parse Error</h1><pre>$m\nFile: $f\nLine: $l</pre></body></html>";
+        }
     });
 } else {
     // Show everything during development
@@ -600,6 +613,8 @@ function ensureFeatureSupportSchema(PDO $pdo): void {
         ) ENGINE=InnoDB");
         runSchemaStatement($pdo, "ALTER TABLE notifications ADD COLUMN IF NOT EXISTS title VARCHAR(120) DEFAULT NULL");
         runSchemaStatement($pdo, "ALTER TABLE notifications ADD COLUMN IF NOT EXISTS link_url VARCHAR(255) DEFAULT NULL");
+        runSchemaStatement($pdo, "ALTER TABLE notifications ADD COLUMN IF NOT EXISTS redirect_path VARCHAR(255) DEFAULT NULL");
+        runSchemaStatement($pdo, "CREATE INDEX idx_notifications_user_read ON notifications (user_id, is_read)");
         runSchemaStatement($pdo, "CREATE TABLE IF NOT EXISTS security_logs (
             id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             event_type VARCHAR(80) NOT NULL,

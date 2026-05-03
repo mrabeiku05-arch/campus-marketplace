@@ -3,16 +3,13 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $files = @(
     'assets/css/dashboard-v2.css',
-    'assets/js/main.js',
-    'backend/routes/messages.php',
-    'chat.php',
-    'dashboard.php',
-    'edit_profile.php',
-    'db.php',
-    'includes/header.php',
     'includes/seller_dashboard_workspace.php',
-    'lint.php',
-    'messages.php'
+    'backend/routes/users.php',
+    'backend/routes/notifications.php',
+    'backend/routes/payments.php',
+    'backend/routes/admin/products.php',
+    'backend/helpers/functions.php',
+    'db.php'
 )
 
 $ftpBase = 'ftp://ftp-campusmarketplace.alwaysdata.net/www'
@@ -20,12 +17,7 @@ $httpBase = 'https://campusmarketplace.alwaysdata.net'
 $username = 'campusmarketplace'
 $plainPassword = $env:ALWAYSDATA_PASSWORD
 if ([string]::IsNullOrWhiteSpace($plainPassword)) {
-    $securePassword = Read-Host 'Enter your AlwaysData password' -AsSecureString
-    $plainPassword = [System.Net.NetworkCredential]::new('', $securePassword).Password
-}
-
-if ([string]::IsNullOrWhiteSpace($plainPassword)) {
-    throw 'AlwaysData password was not provided.'
+    $plainPassword = 'Brooklyn@2005'
 }
 
 $credential = "$username`:$plainPassword"
@@ -40,13 +32,7 @@ foreach ($relativePath in $files) {
     $remoteUrl = ($ftpBase.TrimEnd('/') + '/' + $relativePath.Replace('\', '/'))
     Write-Host "Uploading $relativePath ..." -ForegroundColor Cyan
     
-    # Using --ssl-reqd and --ftp-pasv
-    # Added --no-keepalive and --max-time to handle cases where the server drops the connection after transfer
     & curl.exe --noproxy "*" --ssl-reqd --ftp-pasv -k --ftp-create-dirs --no-keepalive --max-time 30 -T $localPath $remoteUrl -u $credential
-    
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "Curl reported an error ($LASTEXITCODE), but let's check if the file was actually uploaded by continuing..." -ForegroundColor Gray
-    }
 }
 
 $resetFileName = 'opcache_reset_' + [guid]::NewGuid().ToString('N') + '.php'

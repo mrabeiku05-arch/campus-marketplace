@@ -13,6 +13,13 @@ $userId = (int) $_SESSION['user_id'];
 $lastId = max(0, (int) ($_GET['last_id'] ?? 0));
 $boolFalse = sqlBool(false, $pdo);
 
+// Handle mark_read=1 → mark all notifications as read for this user
+if (!empty($_GET['mark_read'])) {
+    $boolTrue = sqlBool(true, $pdo);
+    $markStmt = $pdo->prepare("UPDATE notifications SET is_read = {$boolTrue} WHERE user_id = ? AND is_read = {$boolFalse}");
+    $markStmt->execute([$userId]);
+}
+
 $notifStmt = $pdo->prepare("SELECT id, type, title, message, link_url, reference_id, is_read, created_at
     FROM notifications
     WHERE user_id = ? AND id > ?

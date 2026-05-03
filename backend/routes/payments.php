@@ -200,6 +200,15 @@ if ($method === 'POST' && $action === 'initialize') {
         }
 
         $pdo->commit();
+        
+        // Notifications
+        if ($tx['type'] !== 'deposit') {
+            createNotification($pdo, (int)$tx['user_id'], 'subscription', "Your account has been upgraded to the $tier tier.", null, ['title' => 'Subscription Upgraded']);
+            createNotification($pdo, (int)$tx['user_id'], 'payment', "Your payment of GHS {$tx['amount']} was confirmed for your tier upgrade.", null, ['title' => 'Payment Confirmed']);
+        } else {
+            createNotification($pdo, (int)$tx['user_id'], 'payment', "Your wallet deposit of GHS {$tx['amount']} was successful.", null, ['title' => 'Deposit Confirmed']);
+        }
+        
         if ($auditMessage !== null) {
             try {
                 auditLog($pdo, (int)$tx['user_id'], $auditMessage, 'payment', $auditTargetId);

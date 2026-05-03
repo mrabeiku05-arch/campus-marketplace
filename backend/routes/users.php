@@ -131,6 +131,36 @@ elseif ($method === 'DELETE' && $action === 'vacation') {
     jsonSuccess('Vacation mode ended. Your products are now visible.');
 }
 
+// ── SLOT COUNT ──
+elseif ($method === 'GET' && $action === 'slot-count') {
+    $auth = authenticate();
+    $user = getUser($pdo, $auth['user_id']);
+    
+    // Calculate slots
+    $tierLimits = getAccountTiers();
+    $currentTier = strtolower($user['plan'] ?? 'basic');
+    $inventoryLimit = $tierLimits[$currentTier] ?? $tierLimits['basic'];
+    
+    // Get used slots
+    $countStmt = $pdo->prepare("SELECT COUNT(*) FROM products WHERE user_id = ? AND status != 'deleted'");
+    $countStmt->execute([$auth['user_id']]);
+    $usedSlots = (int) $countStmt->fetchColumn();
+    
+    // Add pending products to the count
+    $pendingStmt = $pdo->prepare("SELECT COUNT(*) FROM products WHERE user_id = ? AND status = 'pending'");
+    $pendingStmt->execute([$auth['user_id']]);
+    $pendingSlots = (int) $pendingStmt->fetchColumn();
+    
+    $totalUsed = $usedSlots + $pendingSlots;
+    $availableSlots = max(0, $inventoryLimit - $totalUsed);
+
+    jsonResponse([
+        'available_slots' => $availableSlots,
+        'used_slots' => $totalUsed,
+        'total_slots' => $inventoryLimit
+    ]);
+}
+
 else {
     jsonError('User endpoint not found', 404);
 }

@@ -160,12 +160,12 @@ require_once 'includes/header.php';
                 <img id="profilePicPreview" src="<?= getAssetUrl('assets/img/default-avatar.svg') ?>" class="profile-pic profile-pic-lg profile-pic-previewable <?= $tierClass ?> mb-2" style="cursor:pointer; display:none;" alt="Profile">
             <?php endif; ?>
             <label>Profile Photo <small style="color:var(--text-muted);">(requires admin approval)</small></label>
-            <input type="file" name="profile_pic" class="form-control" accept="image/*" onchange="previewSelectedImage(this, 'profilePicPreview')">
+            <input type="file" name="profile_pic" style="background:#fff !important; color:#1f2937 !important; border:1px solid #e5e7eb !important; border-radius:8px; padding:10px 14px;" class="form-control" accept="image/*" onchange="previewSelectedImage(this, 'profilePicPreview')">
         </div>
 
         <div class="form-group">
             <label for="faculty">Faculty *</label>
-            <select name="faculty" id="faculty" class="form-control" required>
+            <select name="faculty" id="faculty" style="background:#fff !important; color:#1f2937 !important; border:1px solid #e5e7eb !important; border-radius:8px; padding:10px 14px;" class="form-control" required>
                 <option value="">— Choose Faculty —</option>
                 <?php foreach($faculties as $f): ?>
                     <option value="<?= $f ?>" <?= ($user['faculty'] ?? '') === $f ? 'selected' : '' ?>><?= $f ?></option>
@@ -175,17 +175,17 @@ require_once 'includes/header.php';
 
         <div class="form-group">
             <label for="bio">Bio / Slogan</label>
-            <textarea name="bio" id="bio" class="form-control" rows="3"><?= htmlspecialchars($user['bio'] ?? '') ?></textarea>
+            <textarea name="bio" id="bio" style="background:#fff !important; color:#1f2937 !important; border:1px solid #e5e7eb !important; border-radius:8px; padding:10px 14px;" class="form-control" rows="3"><?= htmlspecialchars($user['bio'] ?? '') ?></textarea>
         </div>
 
         <div class="form-row">
             <div class="form-group">
                 <label for="department">Department</label>
-                <input type="text" name="department" id="department" class="form-control" value="<?= htmlspecialchars($user['department'] ?? '') ?>">
+                <input type="text" name="department" id="department" style="background:#fff !important; color:#1f2937 !important; border:1px solid #e5e7eb !important; border-radius:8px; padding:10px 14px;" class="form-control" value="<?= htmlspecialchars($user['department'] ?? '') ?>">
             </div>
             <div class="form-group">
                 <label for="level">Level</label>
-                <select name="level" id="level" class="form-control">
+                <select name="level" id="level" style="background:#fff !important; color:#1f2937 !important; border:1px solid #e5e7eb !important; border-radius:8px; padding:10px 14px;" class="form-control">
                     <option value="">Select</option>
                     <?php foreach(['100','200','300','400','BTech'] as $l): ?>
                         <option value="<?= $l ?>" <?= ($user['level'] ?? '') === $l ? 'selected' : '' ?>><?= $l ?></option>
@@ -197,11 +197,11 @@ require_once 'includes/header.php';
         <div class="form-row">
             <div class="form-group">
                 <label for="hall">Hall / Residence</label>
-                <input type="text" name="hall" id="hall" class="form-control" value="<?= htmlspecialchars($user['hall'] ?? '') ?>">
+                <input type="text" name="hall" id="hall" style="background:#fff !important; color:#1f2937 !important; border:1px solid #e5e7eb !important; border-radius:8px; padding:10px 14px;" class="form-control" value="<?= htmlspecialchars($user['hall'] ?? '') ?>">
             </div>
             <div class="form-group">
                 <label for="phone">Phone Number</label>
-                <input type="tel" name="phone" id="phone" class="form-control" value="<?= htmlspecialchars($user['phone'] ?? '') ?>">
+                <input type="tel" name="phone" id="phone" style="background:#fff !important; color:#1f2937 !important; border:1px solid #e5e7eb !important; border-radius:8px; padding:10px 14px;" class="form-control" value="<?= htmlspecialchars($user['phone'] ?? '') ?>">
             </div>
         </div>
 
@@ -209,16 +209,16 @@ require_once 'includes/header.php';
         <div class="form-row">
             <div class="form-group">
                 <label for="whatsapp">WhatsApp Number</label>
-                <input type="text" name="whatsapp" id="whatsapp" class="form-control" value="<?= htmlspecialchars($user['whatsapp'] ?? '') ?>" placeholder="233241234567">
+                <input type="text" name="whatsapp" id="whatsapp" style="background:#fff !important; color:#1f2937 !important; border:1px solid #e5e7eb !important; border-radius:8px; padding:10px 14px;" class="form-control" value="<?= htmlspecialchars($user['whatsapp'] ?? '') ?>" placeholder="233241234567">
             </div>
             <div class="form-group">
                 <label for="instagram">Instagram Handle</label>
-                <input type="text" name="instagram" id="instagram" class="form-control" value="<?= htmlspecialchars($user['instagram'] ?? '') ?>" placeholder="username">
+                <input type="text" name="instagram" id="instagram" style="background:#fff !important; color:#1f2937 !important; border:1px solid #e5e7eb !important; border-radius:8px; padding:10px 14px;" class="form-control" value="<?= htmlspecialchars($user['instagram'] ?? '') ?>" placeholder="username">
             </div>
         </div>
         <div class="form-group">
             <label for="linkedin">LinkedIn</label>
-            <input type="text" name="linkedin" id="linkedin" class="form-control" value="<?= htmlspecialchars($user['linkedin'] ?? '') ?>">
+            <input type="text" name="linkedin" id="linkedin" style="background:#fff !important; color:#1f2937 !important; border:1px solid #e5e7eb !important; border-radius:8px; padding:10px 14px;" class="form-control" value="<?= htmlspecialchars($user['linkedin'] ?? '') ?>">
         </div>
 
         <?php if(isSeller()): ?>
@@ -229,7 +229,7 @@ require_once 'includes/header.php';
             <?php else: ?>
                 <img id="shopBannerPreview" src="" class="profile-pic-previewable" style="width:100%;max-height:120px;object-fit:cover;border-radius:8px;margin-bottom:0.5rem;cursor:pointer;display:none;" alt="Shop Banner">
             <?php endif; ?>
-            <input type="file" name="shop_banner" id="shop_banner" class="form-control" accept="image/*" onchange="previewSelectedImage(this, 'shopBannerPreview')">
+            <input type="file" name="shop_banner" id="shop_banner" style="background:#fff !important; color:#1f2937 !important; border:1px solid #e5e7eb !important; border-radius:8px; padding:10px 14px;" class="form-control" accept="image/*" onchange="previewSelectedImage(this, 'shopBannerPreview')">
         </div>
         <?php endif; ?>
 
@@ -257,3 +257,4 @@ function previewSelectedImage(input, imgId) {
 </script>
 
 <?php require_once 'includes/footer.php'; ?>
+

@@ -1201,7 +1201,12 @@ require_once 'includes/header.php';
 </style>
 <?php
 if ($hasSellerDashboardAccess):
+    // Close the .container opened by header.php so dashboard-v2.css
+    // rule "body.dashboard-v2 > .container { display:none }" does NOT
+    // hide the seller workspace.  The footer will re-open .container.
+    echo '</div><!-- /container (escape for dash-shell) -->';
     require __DIR__ . '/includes/seller_dashboard_workspace.php';
+    echo '<div class="container"><!-- re-open for footer -->';
 else:
 if($msg): ?><div class="alert alert-success fade-in"><?= htmlspecialchars($msg) ?></div><?php endif; ?>
 

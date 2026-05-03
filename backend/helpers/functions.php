@@ -227,9 +227,14 @@ if (isset($pdo) && $pdo instanceof PDO) {
 
 function notificationTitleFor(string $type): string {
     return match ($type) {
-        'new_message' => 'New message',
-        'new_order', 'order_received' => 'New order',
+        'message', 'new_message' => 'New message',
+        'order', 'new_order', 'order_received' => 'New order',
         'order_update', 'order_accepted', 'order_rejected', 'order_cancelled', 'seller_confirmed', 'buyer_confirmed' => 'Order update',
+        'approval' => 'Product Approved',
+        'rejection' => 'Product Rejected',
+        'subscription' => 'Subscription Update',
+        'slot' => 'Slot Update',
+        'payment' => 'Payment Confirmed',
         'admin_alert', 'dispute' => 'Admin alert',
         default => 'Campus Marketplace',
     };
@@ -237,9 +242,11 @@ function notificationTitleFor(string $type): string {
 
 function notificationLinkFor(string $type, ?int $referenceId = null): string {
     return match ($type) {
-        'new_message' => $referenceId ? 'chat.php?user=' . $referenceId : 'chat.php',
-        'new_order', 'order_received' => 'dashboard.php#seller_orders',
+        'message', 'new_message' => $referenceId ? 'chat.php?user=' . $referenceId : 'chat.php',
+        'order', 'new_order', 'order_received' => 'dashboard.php#seller_orders',
         'order_update', 'order_accepted', 'order_rejected', 'order_cancelled', 'seller_confirmed', 'buyer_confirmed' => 'dashboard.php#buyer_orders',
+        'approval', 'rejection' => 'dashboard.php#inventory',
+        'subscription', 'slot', 'payment' => 'dashboard.php#wallet',
         'admin_alert', 'dispute' => 'admin/',
         default => 'dashboard.php',
     };
@@ -322,7 +329,7 @@ function createMessageNotification(PDO $pdo, int $receiverId, int $senderId, str
     createNotification(
         $pdo,
         $receiverId,
-        'new_message',
+        'message',
         $senderName . ' sent you a message: ' . $preview,
         $senderId,
         [
