@@ -3,13 +3,19 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $files = @(
     'assets/css/dashboard-v2.css',
-    'includes/seller_dashboard_workspace.php',
-    'backend/routes/users.php',
+    'backend/helpers/functions.php',
+    'backend/routes/admin/products.php',
     'backend/routes/notifications.php',
     'backend/routes/payments.php',
-    'backend/routes/admin/products.php',
-    'backend/helpers/functions.php',
-    'db.php'
+    'backend/routes/users.php',
+    'dashboard.php',
+    'db.php',
+    'deploy.alwaysdata.bat',
+    'edit_profile.php',
+    'includes/header.php',
+    'includes/seller_dashboard_workspace.php',
+    'messages.php',
+    'notifications_poll.php'
 )
 
 $ftpBase = 'ftp://ftp-campusmarketplace.alwaysdata.net/www'
@@ -17,7 +23,7 @@ $httpBase = 'https://campusmarketplace.alwaysdata.net'
 $username = 'campusmarketplace'
 $plainPassword = $env:ALWAYSDATA_PASSWORD
 if ([string]::IsNullOrWhiteSpace($plainPassword)) {
-    $plainPassword = 'Brooklyn@2005'
+    $plainPassword = 'Brooklyn@2006'
 }
 
 $credential = "$username`:$plainPassword"
