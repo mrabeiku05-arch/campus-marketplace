@@ -203,7 +203,7 @@ echo '<link rel="stylesheet" href="' . getAssetUrl('assets/css/dashboard-v2.css'
             <a href="dashboard.php?tab=wallet" class="dash-withdraw-btn">Withdraw</a>
         </div>
         <div class="sidebar-footer" style="padding: 16px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: auto;">
-          <a href="index.php" style="display:flex; align-items:center; gap:10px; color:rgba(255,255,255,0.7); text-decoration:none; font-size:0.85rem; padding: 8px 12px; border-radius:8px;">
+          <a href="/" style="display:flex; align-items:center; gap:10px; color:rgba(255,255,255,0.7); text-decoration:none; font-size:0.85rem; padding: 8px 12px; border-radius:8px;">
             <i class="fas fa-arrow-left"></i> Back to Site
           </a>
         </div>
